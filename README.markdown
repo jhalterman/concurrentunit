@@ -1,4 +1,4 @@
-# ConcurrentUnit 0.0.1
+# ConcurrentUnit 0.1.0
 
 Copyright 2010 Jonathan Halterman - Released under the [EPL license](http://www.eclipse.org/legal/epl-v10.html).
 
@@ -6,10 +6,11 @@ A simple concurrent JUnit test case extension.
 
 ## Introduction
 
-ConcurrentUnit allows you to write test cases capable of performing concurrent assertions or waiting for expected operations across multiple threads, with failures being properly reported back to the main test thread.
+ConcurrentUnit enables you to write test cases capable of performing assertions and verifying expected operations from multiple threads, with failures being properly reported back to the main test thread.
 
 ## Usage
 
+* Extend ConcurrentTestCase
 * Use `threadWait` or `sleep` calls to block the main test thread while waiting for worker threads to perform assertions. 
 * Use `threadAssert` calls from any thread to perform concurrent assertions. Assertion failures will result in the main thread being interrupted and the failure thrown.
 * Once expected assertions are completed, use a `resume` call to unblock the main thread.
@@ -54,7 +55,7 @@ TimeoutException occurs if resume is not called before the wait duration is exce
         threadWait(1);
     }
 
-Block the main thread while waiting for n number of resume calls:
+Block the main thread while waiting for n number of expected resume calls:
 
     @Test
     public void shouldSupportMultipleResumes() throws Throwable {
