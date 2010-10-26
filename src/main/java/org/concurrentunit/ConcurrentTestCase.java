@@ -28,7 +28,7 @@ import static org.junit.Assert.fail;
  * 
  * <pre>
  * @Test
- * public void sleepShouldSupportAssertionErrors() throws Throwable {
+ * public void assertAndResume() throws Throwable {
  *     new Thread(new Runnable() {
  *       public void run() {
  *           threadAssertTrue(true);
@@ -84,7 +84,7 @@ public abstract class ConcurrentTestCase {
     }
 
     /**
-     * Fails the current test for the given exception.
+     * Fails the current test with the given Throwable.
      */
     public void threadFail(Throwable e) {
         failure = e;
@@ -92,7 +92,7 @@ public abstract class ConcurrentTestCase {
     }
 
     /**
-     * If expression not true, set status to indicate current testcase should fail
+     * @see org.junit.Assert#assertTrue(boolean)
      */
     public void threadAssertTrue(boolean b) {
         try {
@@ -103,7 +103,7 @@ public abstract class ConcurrentTestCase {
     }
 
     /**
-     * If expression not false, set status to indicate current testcase should fail
+     * @see org.junit.Assert#assertFalse(boolean)
      */
     public void threadAssertFalse(boolean b) {
         try {
@@ -114,7 +114,7 @@ public abstract class ConcurrentTestCase {
     }
 
     /**
-     * If argument not null, set status to indicate current testcase should fail
+     * @see org.junit.Assert#assertNull(Object)
      */
     public void threadAssertNull(Object x) {
         try {
@@ -136,7 +136,7 @@ public abstract class ConcurrentTestCase {
     }
 
     /**
-     * If arguments not equal, set status to indicate current testcase should fail
+     * @see org.junit.Assert#assertEquals(Object, Object)
      */
     public void threadAssertEquals(Object x, Object y) {
         try {
@@ -152,7 +152,7 @@ public abstract class ConcurrentTestCase {
      * 
      * @param executor
      */
-    public void joinPool(ExecutorService executor) {
+    public void joinPool(ExecutorService executor, long waitDuration) {
         try {
             executor.shutdown();
             assertTrue(executor.awaitTermination(2500, MILLISECONDS));
@@ -167,7 +167,7 @@ public abstract class ConcurrentTestCase {
      * any other thread running within the context of this test.
      * 
      * <p>
-     * Call {@link #resume()} to interrupt the sleep.
+     * Call {@link #resume()} to interrupt sleep.
      * 
      * <p>
      * Note: A sleep time of 0 will sleep indefinitely. This is only recommended to use if you are
@@ -181,7 +181,7 @@ public abstract class ConcurrentTestCase {
         try {
             Thread.sleep(sleepTime);
             throw new TimeoutException(TIMEOUT_MESSAGE);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         } finally {
             if (failure != null)
                 throw failure;
@@ -189,44 +189,43 @@ public abstract class ConcurrentTestCase {
     }
 
     /**
-     * Waits until resume is called {@code pResumeCount} times.
+     * Waits until {@link #resume()} is called {@code resumeThreshold} times.
      * 
-     * @param waitTime Time to wait
-     * @param resumeCount Number of times resume must be called before wait completes
+     * @param waitDuration Duration to wait
+     * @param resumeThreshold Number of times resume must be called before wait completes
      * @throws IllegalStateException if called from outside the main test thread
      * @throws TimeoutException if the wait operation times out while waiting for a result
      */
-    protected void threadWait(long waitTime, int resumeCount) throws Throwable {
+    protected void threadWait(long waitDuration, int resumeThreshold) throws Throwable {
         if (Thread.currentThread() != mainThread)
             throw new IllegalStateException("Must be called from within the main test thread");
 
-        waitCount = new AtomicInteger(resumeCount);
-
-        threadWait(waitTime);
+        waitCount = new AtomicInteger(resumeThreshold);
+        threadWait(waitDuration);
         waitCount = null;
     }
 
     /**
-     * Waits till the wait time has elapsed or the test case's monitor is interrupted, and throws
-     * any exception that is set by any other thread running within the context of this test.
+     * Waits till the wait duration has elapsed or the test case's monitor is interrupted, and
+     * throws any exception that is set by any other thread running within the context of this test.
      * 
      * <p>
-     * Call {@link #finish()} to interrupt the wait.
+     * Call {@link #resume()} to interrupt the wait.
      * 
      * <p>
      * Note: A wait time of 0 will wait indefinitely. This is only recommended to use if you are
-     * absolutely sure that {@link #finish()} will be called by some thread.
+     * absolutely sure that {@link #resume()} will be called by some thread.
      * 
-     * @param waitTime Time to wait
+     * @param waitDuration Duration to wait
      * @throws Throwable If any exception occurs while waiting
      * @throws TimeoutException if the wait operation times out while waiting for a result
      */
-    protected void threadWait(long waitTime) throws Throwable, TimeoutException {
+    protected void threadWait(long waitDuration) throws Throwable, TimeoutException {
         synchronized (this) {
             try {
-                wait(waitTime);
+                wait(waitDuration);
                 throw new TimeoutException(TIMEOUT_MESSAGE);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             } finally {
                 if (failure != null)
                     throw failure;
