@@ -255,6 +255,9 @@ public abstract class ConcurrentTestCase {
    * @see #sleep(long, int)
    */
   protected void threadWait(long waitDuration, int resumeThreshold) throws Throwable {
-    sleep(waitDuration, resumeThreshold);
+    if (waitDuration == 0)
+      threadWait();
+    else
+      sleep(waitDuration, resumeThreshold);
   }
 }
