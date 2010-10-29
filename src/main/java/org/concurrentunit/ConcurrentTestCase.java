@@ -47,7 +47,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class ConcurrentTestCase {
   private static final String TIMEOUT_MESSAGE = "Test timed out while waiting for an expected result";
   private final Thread mainThread;
-  private AtomicInteger sleepCount;
+  private AtomicInteger waitCount;
   private Throwable failure;
 
   /**
@@ -151,17 +151,18 @@ public abstract class ConcurrentTestCase {
   }
 
   /**
-   * Resumes a waiting test case.
+   * Resumes a waiting test case if {@code thread} is not the mainThread, the waitCount is null or
+   * the decremented waitCount is 0.
    * 
    * <p>
-   * Note: This method is likely not very useful since a concurrent run of a test case resulting in
-   * the need to resume from a separate thread would yield no correlation between the initiating
-   * thread and the thread where the resume call takes place.
+   * Note: This method is likely not very useful to call directly since a concurrent run of a test
+   * case resulting in the need to resume from a separate thread would yield no correlation between
+   * the initiating thread and the thread where the resume call takes place.
    * 
    * @param thread Thread to resume
    */
   protected void resume(Thread thread) {
-    if (thread != mainThread || sleepCount == null || sleepCount.decrementAndGet() == 0)
+    if (thread != mainThread || waitCount == null || waitCount.decrementAndGet() == 0)
       thread.interrupt();
   }
 
@@ -198,9 +199,9 @@ public abstract class ConcurrentTestCase {
     if (Thread.currentThread() != mainThread)
       throw new IllegalStateException("Must be called from within the main test thread");
 
-    sleepCount = new AtomicInteger(resumeThreshold);
+    waitCount = new AtomicInteger(resumeThreshold);
     sleep(sleepDuration);
-    sleepCount = null;
+    waitCount = null;
   }
 
   /**
@@ -255,9 +256,11 @@ public abstract class ConcurrentTestCase {
    * @see #sleep(long, int)
    */
   protected void threadWait(long waitDuration, int resumeThreshold) throws Throwable {
-    if (waitDuration == 0)
+    if (waitDuration == 0) {
+      waitCount = new AtomicInteger(resumeThreshold);
       threadWait();
-    else
+      waitCount = null;
+    } else
       sleep(waitDuration, resumeThreshold);
   }
 }
