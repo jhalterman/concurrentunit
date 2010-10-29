@@ -1,7 +1,5 @@
 # ConcurrentUnit 0.1.0
 
-Copyright 2010 Jonathan Halterman - Released under the [EPL license](http://www.eclipse.org/legal/epl-v10.html).
-
 A simple concurrent JUnit test case extension.
 
 ## Introduction
@@ -41,7 +39,7 @@ Handle a failed assertion:
                 threadAssertTrue(false);
             }
         }).start();
-        threadWait(0);
+        threadWait();
     }
 
 TimeoutException occurs if resume is not called before the wait duration is exceeded:
@@ -69,10 +67,6 @@ Block the main thread while waiting for n number of expected resume calls:
         threadWait(500, resumeThreshold);
     }
 
-## References
-
-Thanks to the JSR-166 TCK authors for the initial inspiration.
-
 ## License
 
-ConcurrentUnit is released under the [EPL license](http://www.eclipse.org/legal/epl-v10.html).
+ConcurrentUnit is Copyright 2010 Jonathan Halterman and is released under the [EPL license](http://www.eclipse.org/legal/epl-v10.html).
