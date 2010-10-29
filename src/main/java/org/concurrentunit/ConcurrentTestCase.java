@@ -1,6 +1,5 @@
 package org.concurrentunit;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -9,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -58,16 +58,17 @@ public abstract class ConcurrentTestCase {
   }
 
   /**
-   * Wait out termination of a thread pool or fail doing so. Waits 2500 ms for executor termination.
+   * Wait out termination of a thread pool or fail doing so. Waits {@code waitDuration}
+   * {@code waitUnits} for executor termination.
    * 
    * @param executor
    */
-  public void joinPool(ExecutorService executor, long waitDuration) {
+  public void joinPool(ExecutorService executor, long waitDuration, TimeUnit waitUnits) {
     try {
       executor.shutdown();
-      assertTrue(executor.awaitTermination(2500, MILLISECONDS));
+      assertTrue(executor.awaitTermination(waitDuration, waitUnits));
     } catch (SecurityException ok) {
-    } catch (InterruptedException ie) {
+    } catch (InterruptedException e) {
       fail("Unexpected InterruptedException");
     }
   }
