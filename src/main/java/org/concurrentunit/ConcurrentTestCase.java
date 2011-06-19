@@ -205,13 +205,6 @@ public abstract class ConcurrentTestCase {
   }
 
   /**
-   * Alias for {@link #resume()} for use within the context of a Thread instance.
-   */
-  protected void threadResume() {
-    resume(mainThread);
-  }
-
-  /**
    * Waits until {@link #resume()} is called, or the test is failed.
    * 
    * @throws IllegalStateException if called from outside the main test thread
