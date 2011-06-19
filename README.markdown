@@ -1,7 +1,5 @@
 # ConcurrentUnit 0.1.0
 
-Copyright 2010-2011 Jonathan Halterman - Released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).
-
 A simple concurrent JUnit test case extension.
 
 ## Introduction
@@ -74,4 +72,4 @@ Thanks to the JSR-166 TCK authors for the initial inspiration.
 
 ## License
 
-ConcurrentUnit is released under the [Apache 2 license](http://www.apache.org/licenses/LICENSE-2.0.html).
+Copyright 2010-2011 Jonathan Halterman - Released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).
