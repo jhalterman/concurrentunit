@@ -18,7 +18,7 @@ public class ConcurrentTestCaseTest extends ConcurrentTestCase {
         resume();
       }
     }).start();
-    threadWait(0);
+    threadWait();
   }
 
   /**
@@ -35,7 +35,7 @@ public class ConcurrentTestCaseTest extends ConcurrentTestCase {
         }
       }
     }).start();
-    threadWait(0);
+    threadWait();
   }
 
   /**
@@ -124,5 +124,16 @@ public class ConcurrentTestCaseTest extends ConcurrentTestCase {
       }
     }).start();
     threadWait(500, 5);
+  }
+
+  @Test
+  public void shouldSupportThreadWait0WithResumeCount() throws Throwable {
+    new Thread(new Runnable() {
+      public void run() {
+        for (int i = 0; i < 5; i++)
+          resume();
+      }
+    }).start();
+    threadWait(0, 5);
   }
 }
