@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 target/
 *~
 .project
 .classpath
-=======
-target/
-*~
-.project
-.classpath
->>>>>>> 21cab232bc4e99b4b9d9250d84c833f4e01ad894
 .settings/
+test-output/
