@@ -6,6 +6,10 @@ A simple concurrent JUnit test case extension.
 
 ConcurrentUnit allows you to write test cases capable of performing concurrent assertions or waiting for expected operations across multiple threads, with failures being properly reported back to the main test thread.
 
+## Setup
+
+[Download](https://github.com/jhalterman/concurrentunit/archives/master) the latest jar and add it to your classpath.
+
 ## Usage
 
 * Use `threadWait` or `sleep` calls to block the main test thread while waiting for worker threads to perform assertions. 
