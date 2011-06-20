@@ -12,6 +12,7 @@ ConcurrentUnit allows you to write test cases capable of performing concurrent a
 
 ## Usage
 
+* Extend `ConcurrentTestCase`
 * Use `threadWait` or `sleep` calls to block the main test thread while waiting for worker threads to perform assertions. 
 * Use `threadAssert` calls from any thread to perform concurrent assertions. Assertion failures will result in the main thread being interrupted and the failure thrown.
 * Once expected assertions are completed, use a `resume` call to unblock the main thread.
