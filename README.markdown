@@ -1,4 +1,4 @@
-# ConcurrentUnit 0.1.0
+# ConcurrentUnit 0.2.0
 
 A simple concurrent JUnit test case extension.
 
