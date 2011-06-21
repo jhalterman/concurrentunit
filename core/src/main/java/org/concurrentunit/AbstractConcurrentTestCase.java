@@ -1,67 +1,23 @@
 package org.concurrentunit;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.testng.annotations.BeforeMethod;
-
 /**
- * Concurrent test case.
- * 
- * <p>
- * Call {@link #sleep(long)}, {@link #sleep(long, int)}, {@link #threadWait(long)} or
- * {@link #threadWait(long, int)} from the main unit test thread to wait for some other thread to
- * perform assertions. These operations will block until {@link #resume()} is called, the operation
- * times out, or a threadAssert call fails.
- * 
- * <p>
- * The threadAssert methods can be used from any thread to perform concurrent assertions. Assertion
- * failures will result in the main thread being interrupted and the failure thrown.
- * 
- * <p>
- * Usage:
- * 
- * <pre>
- * @Test
- * public void assertAndResume() throws Throwable {
- *   new Thread(new Runnable() {
- *     public void run() {
- *       threadAssertTrue(true);
- *       resume();
- *     }
- *   }).start();
- *   
- *   sleep(500);
- * }
- * </pre>
- * 
  * @author Jonathan Halterman
  */
-public abstract class ConcurrentTestCase {
+public abstract class AbstractConcurrentTestCase {
   private static final String TIMEOUT_MESSAGE = "Test timed out while waiting for an expected result";
   private final Thread mainThread;
-  private AtomicInteger waitCount;
-  private Throwable failure;
-
-  @BeforeMethod
-  public void initContext() {
-    waitCount = null;
-    failure = null;
-  }
+  protected AtomicInteger waitCount;
+  protected Throwable failure;
 
   /**
    * Creates a new ConcurrentTestCase object.
    */
-  public ConcurrentTestCase() {
+  public AbstractConcurrentTestCase() {
     mainThread = Thread.currentThread();
   }
 
@@ -150,6 +106,18 @@ public abstract class ConcurrentTestCase {
     failure = e;
     resume(mainThread);
   }
+
+  protected abstract void assertEquals(Object actual, Object expected);
+
+  protected abstract void assertFalse(boolean condition);
+
+  protected abstract void assertNotNull(Object o);
+
+  protected abstract void assertNull(Object o);
+
+  protected abstract void assertTrue(boolean condition);
+
+  protected abstract void fail(String message);
 
   /**
    * Resumes the main test thread.

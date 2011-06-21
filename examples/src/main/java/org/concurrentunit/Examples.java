@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 /**
  * ConcurrentUnit examples.
  */
+
 public class Examples extends ConcurrentTestCase {
   /**
    * Block the main thread while waiting for an assertion in a worker thread and resume after
@@ -14,7 +15,7 @@ public class Examples extends ConcurrentTestCase {
    * 
    * @throws Throwable
    */
-  @Test
+  
   public void shouldSucceed() throws Throwable {
     new Thread(new Runnable() {
       public void run() {

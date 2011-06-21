@@ -6,8 +6,8 @@
 		<artifactId>concurrentunit-parent</artifactId>
 		<version>0.2.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>concurrentunit-testng</artifactId>
-	<name>ConcurrentUnit - TestNG</name>
+	<artifactId>concurrentunit-junit</artifactId>
+	<name>ConcurrentUnit - JUnit</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -39,10 +39,9 @@
 			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>6.0.2</version>
-			<classifier>beta</classifier>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
 		</dependency>
 	</dependencies>
 </project>

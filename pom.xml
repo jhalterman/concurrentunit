@@ -6,7 +6,7 @@
 	<packaging>pom</packaging>
 	<groupId>org.concurrentunit</groupId>
 	<artifactId>concurrentunit-parent</artifactId>
-	<version>${version.number}-SNAPSHOT</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<name>ConcurrentUnit</name>
 	<properties>
 		<version.number>0.2.0</version.number>
@@ -15,8 +15,10 @@
 	<url>https://github.com/jhalterman/concurrentunit</url>
 	<inceptionYear>2010</inceptionYear>
 	<scm>
-		<connection>scm:git:git://github.com/jhalterman/concurrentunit.git</connection>
-		<developerConnection>scm:git:git://github.com/jhalterman/concurrentunit.git</developerConnection>
+		<connection>scm:git:git://github.com/jhalterman/concurrentunit.git
+		</connection>
+		<developerConnection>scm:git:git://github.com/jhalterman/concurrentunit.git
+		</developerConnection>
 		<url>scm:git:git://github.com/jhalterman/concurrentunit.git</url>
 	</scm>
 	<licenses>
@@ -25,8 +27,9 @@
 			<url>http://apache.org/licenses/LICENSE-2.0</url>
 			<distribution>repo</distribution>
 		</license>
-	</licenses>	
+	</licenses>
 	<modules>
+		<module>core</module>
 		<module>junit</module>
 		<module>testng</module>
 	</modules>
@@ -49,35 +52,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<version>2.2.1</version>
-						<executions>
-							<execution>
-								<id>make-assembly</id>
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-								<configuration>
-									<runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
-									<descriptors>
-										<descriptor>assembly.xml</descriptor>
-									</descriptors>
-									<finalName>modelmapper-${version.number}</finalName>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 	<reporting>
 		<plugins>
 			<plugin>
