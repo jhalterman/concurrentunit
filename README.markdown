@@ -1,6 +1,6 @@
 # ConcurrentUnit 0.2.0
 
-A simple concurrent JUnit test case extension.
+A simple concurrent unit testing extension for JUnit and TestNG.
 
 ## Introduction
 
