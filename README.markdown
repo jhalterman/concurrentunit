@@ -8,7 +8,7 @@ ConcurrentUnit allows you to write test cases capable of performing concurrent a
 
 ## Setup
 
-[Download](https://github.com/jhalterman/concurrentunit/archives/master) the latest jar and add it to your classpath.
+[Download](https://github.com/jhalterman/concurrentunit/archives/master) the latest ConcurrentUnit jar for JUnit or TestNG and add it to your classpath.
 
 ## Usage
 
