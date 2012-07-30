@@ -23,53 +23,61 @@ If a blocking operation times out before all expected `resume` calls occur, the 
 
 Block the main thread while waiting for an assertion in a worker thread and resume after completion:
 
-    @Test
-    public void shouldSucceed() throws Throwable {
-        new Thread(new Runnable() {
-            public void run() {
-                threadAssertTrue(true);
-                resume();
-            }
-        }).start();
-        threadWait(100);
+```java
+@Test
+public void shouldSucceed() throws Throwable {
+  new Thread(new Runnable() {
+    public void run() {
+      threadAssertTrue(true);
+      resume();
     }
+  }).start();
+  threadWait(100);
+}
+```
 
 Handle a failed assertion:
 
-    @Test(expected = AssertionError.class)
-    public void shouldFail() throws Throwable {
-        new Thread(new Runnable() {
-            public void run() {
-                threadAssertTrue(false);
-            }
-        }).start();
-        threadWait(0);
+```java
+@Test(expected = AssertionError.class)
+public void shouldFail() throws Throwable {
+  new Thread(new Runnable() {
+    public void run() {
+      threadAssertTrue(false);
     }
+  }).start();
+  threadWait(0);
+}
+```
 
 TimeoutException occurs if resume is not called before the wait duration is exceeded:
 
-    @Test(expected = TimeoutException.class)
-    public void sleepShouldSupportTimeouts() throws Throwable {
-        new Thread(new Runnable() {
-            public void run() {
-            }
-        }).start();
-        threadWait(1);
+```java
+@Test(expected = TimeoutException.class)
+public void sleepShouldSupportTimeouts() throws Throwable {
+  new Thread(new Runnable() {
+    public void run() {
     }
+  }).start();
+  threadWait(1);
+}
+```
 
 Block the main thread while waiting for n number of resume calls:
 
-    @Test
-    public void shouldSupportMultipleResumes() throws Throwable {
-        final int resumeThreshold = 5;
-        new Thread(new Runnable() {
-            public void run() {
-                for (int i = 0; i < resumeThreshold; i++)
-                    resume();
-            }
-        }).start();
-        threadWait(500, resumeThreshold);
+```java
+@Test
+public void shouldSupportMultipleResumes() throws Throwable {
+  final int resumeThreshold = 5;
+  new Thread(new Runnable() {
+    public void run() {
+      for (int i = 0; i < resumeThreshold; i++)
+        resume();
     }
+  }).start();
+  threadWait(500, resumeThreshold);
+}
+```
 
 ## References
 
