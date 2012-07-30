@@ -7,6 +7,7 @@
 		<version>0.2.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>concurrentunit-testng</artifactId>
+  <version>0.2.0</version>
 	<name>ConcurrentUnit - TestNG</name>
 	<build>
 		<plugins>
@@ -41,8 +42,7 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>6.0.2</version>
-			<classifier>beta</classifier>
+			<version>6.1.1</version>
 		</dependency>
 	</dependencies>
 </project>
