@@ -1,6 +1,6 @@
 # ConcurrentUnit 0.2.0
 
-A simple concurrent unit testing extension for JUnit and TestNG.
+A simple unit testing extension for performing concurrent assertions in JUnit and TestNG.
 
 ## Introduction
 
