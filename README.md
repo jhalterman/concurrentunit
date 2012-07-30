@@ -32,6 +32,7 @@ public void shouldSucceed() throws Throwable {
       resume();
     }
   }).start();
+  
   threadWait(100);
 }
 ```
@@ -46,6 +47,7 @@ public void shouldFail() throws Throwable {
       threadAssertTrue(false);
     }
   }).start();
+  
   threadWait(0);
 }
 ```
@@ -59,6 +61,7 @@ public void sleepShouldSupportTimeouts() throws Throwable {
     public void run() {
     }
   }).start();
+  
   threadWait(1);
 }
 ```
@@ -75,6 +78,7 @@ public void shouldSupportMultipleResumes() throws Throwable {
         resume();
     }
   }).start();
+  
   threadWait(500, resumeThreshold);
 }
 ```
