@@ -1,10 +1,10 @@
 # ConcurrentUnit 0.2.0
 
-A simple unit testing extension for performing concurrent assertions in JUnit and TestNG.
+A simple tool for performing assertions across threads in JUnit and TestNG.
 
 ## Introduction
 
-ConcurrentUnit allows you to write test cases capable of performing concurrent assertions or waiting for expected operations across multiple threads, with failures being properly reported back to the main test thread.
+ConcurrentUnit allows you to write tests capable of performing assertions or waiting for expected operations across multiple threads, with failures being properly reported back to the main test thread. If an assertion fails, your test fails, regardless of which thread the assertion came from.
 
 ## Setup
 
@@ -13,8 +13,8 @@ ConcurrentUnit allows you to write test cases capable of performing concurrent a
 ## Usage
 
 * Extend `ConcurrentTestCase`
-* Use `threadWait` or `sleep` calls to block the main test thread while waiting for worker threads to perform assertions. 
-* Use `threadAssert` calls from any thread to perform concurrent assertions. Assertion failures will result in the main thread being interrupted and the failure thrown.
+* Use `threadWait` or `sleep` calls to block the main test thread while waiting for other threads to perform assertions. 
+* Use `threadAssert` calls from any thread to perform assertions. Assertion failures will result in the main thread being interrupted and the failure thrown.
 * Once expected assertions are completed, use a `resume` call to unblock the main thread.
 
 If a blocking operation times out before all expected `resume` calls occur, the test is failed with a TimeoutException.

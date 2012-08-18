@@ -1,6 +1,6 @@
-package org.concurrentunit.junit;
+package org.jodah.concurrentunit.junit;
 
-import org.concurrentunit.AbstractConcurrentTestCase;
+import org.jodah.concurrentunit.AbstractConcurrentTestCase;
 import org.junit.Assert;
 
 

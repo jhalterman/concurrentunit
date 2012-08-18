@@ -1,6 +1,6 @@
-package org.concurrentunit.testng;
+package org.jodah.concurrentunit.testng;
 
-import org.concurrentunit.AbstractConcurrentTestCase;
+import org.jodah.concurrentunit.AbstractConcurrentTestCase;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 

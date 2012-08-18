@@ -2,7 +2,7 @@ package org.concurrentunit;
 
 import java.util.concurrent.TimeoutException;
 
-import org.concurrentunit.testng.ConcurrentTestCase;
+import org.jodah.concurrentunit.testng.ConcurrentTestCase;
 import org.testng.annotations.Test;
 
 /**

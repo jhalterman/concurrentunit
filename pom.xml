@@ -1,68 +1,85 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<packaging>pom</packaging>
-	<groupId>org.concurrentunit</groupId>
-	<artifactId>concurrentunit-parent</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
-	<name>ConcurrentUnit</name>
-	<properties>
-		<version.number>0.2.0</version.number>
-	</properties>
-	<description>A simple concurrent unit testing extension</description>
-	<url>https://github.com/jhalterman/concurrentunit</url>
-	<inceptionYear>2010</inceptionYear>
-	<scm>
-		<connection>scm:git:git://github.com/jhalterman/concurrentunit.git
-		</connection>
-		<developerConnection>scm:git:git://github.com/jhalterman/concurrentunit.git
-		</developerConnection>
-		<url>scm:git:git://github.com/jhalterman/concurrentunit.git</url>
-	</scm>
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://apache.org/licenses/LICENSE-2.0</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<modules>
-		<module>core</module>
-		<module>junit</module>
-		<module>testng</module>
-	</modules>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<finalName>${artifactId}-${version.number}</finalName>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<author>false</author>
-					<protected>true</protected>
-					<excludePackageNames>*.internal</excludePackageNames>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+
+  <packaging>pom</packaging>
+  <groupId>org.jodah</groupId>
+  <artifactId>concurrentunit-parent</artifactId>
+  <version>0.2.0-SNAPSHOT</version>
+  <name>ConcurrentUnit</name>
+  <url>https://github.com/jhalterman/concurrentunit</url>
+  <inceptionYear>2010</inceptionYear>
+
+  <properties>
+    <version.number>0.2.0</version.number>
+  </properties>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Jonathan Halterman</name>
+      <url>http://jodah.org</url>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/jhalterman/concurrentunit.git</connection>
+    <developerConnection>scm:git:git://github.com/jhalterman/concurrentunit.git</developerConnection>
+    <url>scm:git:git://github.com/jhalterman/concurrentunit.git</url>
+  </scm>
+
+  <modules>
+    <module>core</module>
+    <module>junit</module>
+    <module>testng</module>
+  </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <finalName>${artifactId}-${version.number}</finalName>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <author>false</author>
+          <protected>true</protected>
+          <excludePackageNames>*.internal</excludePackageNames>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
