@@ -36,8 +36,8 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/jhalterman/concurrentunit.git</connection>
-    <developerConnection>scm:git:git://github.com/jhalterman/concurrentunit.git</developerConnection>
+    <connection>scm:git:git@github.com:jhalterman/concurrentunit.git</connection>
+    <developerConnection>scm:git:git@github.com:jhalterman/concurrentunit.git</developerConnection>
     <url>http://github.com/jhalterman/concurrentunit/</url>
   </scm>
 
