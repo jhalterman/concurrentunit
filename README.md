@@ -8,7 +8,21 @@ ConcurrentUnit allows you to write tests capable of performing assertions or wai
 
 ## Setup
 
-[Download](https://github.com/jhalterman/concurrentunit/archives/master) the latest ConcurrentUnit jar for JUnit or TestNG and add it to your classpath.
+Add ConcurrentUnit as a Maven dependency for either JUnit or TestNG (whatever you use):
+
+```xml
+<dependency>
+  <groupId>org.jodah</groupId>
+  <artifactId>concurrentunit-junit</artifactId>
+  <version>0.2.0</version>
+</dependency>
+
+<dependency>
+  <groupId>org.jodah</groupId>
+  <artifactId>concurrentunit-testng</artifactId>
+  <version>0.2.0</version>
+</dependency>
+```
 
 ## Usage
 
