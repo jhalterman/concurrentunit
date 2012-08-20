@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.jodah</groupId>
     <artifactId>concurrentunit-parent</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1-SNAPSHOT</version>
   </parent>
   
   <artifactId>concurrentunit-testng</artifactId>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>org.jodah</groupId>
       <artifactId>concurrentunit-core</artifactId>
-      <version>0.2.0</version>
+      <version>0.2.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.testng</groupId>

@@ -10,7 +10,7 @@
   <packaging>pom</packaging>
   <groupId>org.jodah</groupId>
   <artifactId>concurrentunit-parent</artifactId>
-  <version>0.2.0</version>
+  <version>0.2.1-SNAPSHOT</version>
   <name>ConcurrentUnit</name>
   <url>https://github.com/jhalterman/concurrentunit</url>
   <inceptionYear>2010</inceptionYear>
