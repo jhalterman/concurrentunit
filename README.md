@@ -13,7 +13,7 @@ Add ConcurrentUnit as a Maven dependency:
 ```xml
 <dependency>
   <groupId>org.jodah</groupId>
-  <artifactId>concurrentunit-junit</artifactId>
+  <artifactId>concurrentunit</artifactId>
   <version>0.3.0</version>
 </dependency>
 ```
