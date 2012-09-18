@@ -65,6 +65,27 @@ public abstract class ConcurrentTestCase {
   }
 
   /**
+   * @see Waiter#await()
+   */
+  protected void await() throws Throwable {
+    waiter.await();
+  }
+
+  /**
+   * @see Waiter#await(long)
+   */
+  protected void await(long waitDuration) throws Throwable {
+    waiter.await(waitDuration);
+  }
+
+  /**
+   * @see Waiter#wait(long, int)
+   */
+  protected void await(long waitDuration, int resumeThreshold) throws Throwable {
+    waiter.await(waitDuration, resumeThreshold);
+  }
+
+  /**
    * @see Waiter#resume()
    */
   protected void resume() {
@@ -90,26 +111,5 @@ public abstract class ConcurrentTestCase {
    */
   protected void sleep(long sleepDuration, int resumeThreshold) throws Throwable {
     waiter.sleep(sleepDuration, resumeThreshold);
-  }
-
-  /**
-   * @see Waiter#await()
-   */
-  protected void threadWait() throws Throwable {
-    waiter.await();
-  }
-
-  /**
-   * @see Waiter#await(long)
-   */
-  protected void threadWait(long waitDuration) throws Throwable {
-    waiter.await(waitDuration);
-  }
-
-  /**
-   * @see Waiter#wait(long, int)
-   */
-  protected void threadWait(long waitDuration, int resumeThreshold) throws Throwable {
-    waiter.await(waitDuration, resumeThreshold);
   }
 }

@@ -38,7 +38,7 @@ public void shouldSucceed() throws Throwable {
 
   new Thread(new Runnable() {
     public void run() {
-      threadAssertTrue(true);
+      waiter.assertTrue(true);
       waiter.resume();
     }
   }).start();
@@ -94,6 +94,26 @@ public void shouldSupportMultipleResumes() throws Throwable {
   }).start();
   
   waiter.await(500, resumeThreshold);
+}
+```
+
+### Alternatively
+
+As a more consise alternative to using the `Waiter` class directly, you can extend the `ConcurrentTestCase` convenience class:
+
+```java
+class SomeTest extends ConcurrentTestCase {
+	@Test
+	public void shouldSucceed() throws Throwable {
+	  new Thread(new Runnable() {
+	    public void run() {
+	      threadAssertTrue(true);
+	      resume();
+	    }
+	  }).start();
+	  
+	  await(100);
+	}
 }
 ```
 
