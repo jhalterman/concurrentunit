@@ -7,17 +7,12 @@
     <version>7</version>
   </parent>
 
-  <packaging>pom</packaging>
   <groupId>org.jodah</groupId>
-  <artifactId>concurrentunit-parent</artifactId>
+  <artifactId>concurrentunit</artifactId>
   <version>0.2.1-SNAPSHOT</version>
   <name>ConcurrentUnit</name>
   <url>https://github.com/jhalterman/concurrentunit</url>
   <inceptionYear>2010</inceptionYear>
-
-  <properties>
-    <version.number>0.2.0</version.number>
-  </properties>
 
   <licenses>
     <license>
@@ -40,12 +35,6 @@
     <url>http://github.com/jhalterman/concurrentunit/</url>
   </scm>
 
-  <modules>
-    <module>core</module>
-    <module>junit</module>
-    <module>testng</module>
-  </modules>
-
   <build>
     <plugins>
       <plugin>
@@ -54,13 +43,6 @@
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <finalName>${artifactId}-${version.number}</finalName>
         </configuration>
       </plugin>
     </plugins>
@@ -79,4 +61,11 @@
       </plugin>
     </plugins>
   </reporting>
+  <dependencies>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.5.2</version>
+    </dependency>
+  </dependencies>
 </project>

@@ -1,25 +1,27 @@
-package org.concurrentunit;
+package org.jodah.concurrentunit;
 
 import java.util.concurrent.TimeoutException;
 
-import org.concurrentunit.testng.ConcurrentTestCase;
 import org.testng.annotations.Test;
 
 /**
- * Tests {@link ConcurrentTestCase}.
+ * Tests {@link Waiter}.
  */
-public class ConcurrentTestCaseTest extends ConcurrentTestCase {
+@Test
+public class WaiterTest {
   /**
    * Should throw an exception.
    */
-  @Test
   public void waitShouldSupportResume() throws Throwable {
+    final Waiter w = new Waiter();
+
     new Thread(new Runnable() {
       public void run() {
-        resume();
+        w.resume();
       }
     }).start();
-    threadWait();
+
+    w.await();
   }
 
   /**
@@ -27,16 +29,19 @@ public class ConcurrentTestCaseTest extends ConcurrentTestCase {
    */
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void waitShouldSupportExceptions() throws Throwable {
+    final Waiter w = new Waiter();
+
     new Thread(new Runnable() {
       public void run() {
         try {
           throw new IllegalArgumentException();
         } catch (Exception e) {
-          threadFail(e);
+          w.fail(e);
         }
       }
     }).start();
-    threadWait();
+
+    w.await();
   }
 
   /**
@@ -44,12 +49,15 @@ public class ConcurrentTestCaseTest extends ConcurrentTestCase {
    */
   @Test(expectedExceptions = AssertionError.class)
   public void waitShouldSupportAssertionErrors() throws Throwable {
+    final Waiter w = new Waiter();
+
     new Thread(new Runnable() {
       public void run() {
-        threadAssertTrue(false);
+        w.assertTrue(false);
       }
     }).start();
-    threadWait(0);
+
+    w.await(0);
   }
 
   /**
@@ -59,12 +67,15 @@ public class ConcurrentTestCaseTest extends ConcurrentTestCase {
    */
   @Test(expectedExceptions = TimeoutException.class)
   public void waitShouldSupportTimeouts() throws Throwable {
+    final Waiter w = new Waiter();
+
     new Thread(new Runnable() {
       public void run() {
-        threadAssertTrue(true);
+        w.assertTrue(true);
       }
     }).start();
-    threadWait(500);
+
+    w.await(500);
   }
 
   /**
@@ -74,26 +85,31 @@ public class ConcurrentTestCaseTest extends ConcurrentTestCase {
    */
   @Test(expectedExceptions = TimeoutException.class)
   public void sleepShouldSupportTimeouts() throws Throwable {
+    final Waiter w = new Waiter();
+
     new Thread(new Runnable() {
       public void run() {
       }
     }).start();
-    sleep(500);
+
+    w.sleep(500);
   }
 
   /**
-   * Should support wake.
+   * Should support resume.
    * 
    * @throws Throwable
    */
-  @Test
   public void sleepShouldSupportResume() throws Throwable {
+    final Waiter w = new Waiter();
+
     new Thread(new Runnable() {
       public void run() {
-        resume();
+        w.resume();
       }
     }).start();
-    sleep(500);
+
+    w.sleep(50000);
   }
 
   /**
@@ -103,12 +119,15 @@ public class ConcurrentTestCaseTest extends ConcurrentTestCase {
    */
   @Test(expectedExceptions = AssertionError.class)
   public void sleepShouldSupportAssertionErrors() throws Throwable {
+    final Waiter w = new Waiter();
+
     new Thread(new Runnable() {
       public void run() {
-        threadAssertTrue(false);
+        w.assertTrue(false);
       }
     }).start();
-    sleep(500);
+
+    w.sleep(500);
   }
 
   /**
@@ -116,25 +135,29 @@ public class ConcurrentTestCaseTest extends ConcurrentTestCase {
    * 
    * @throws Throwable
    */
-  @Test
   public void shouldSupportMultipleResumes() throws Throwable {
+    final Waiter w = new Waiter();
+
     new Thread(new Runnable() {
       public void run() {
         for (int i = 0; i < 5; i++)
-          resume();
+          w.resume();
       }
     }).start();
-    threadWait(500, 5);
+
+    w.await(500, 5);
   }
 
-  @Test
   public void shouldSupportThreadWait0WithResumeCount() throws Throwable {
+    final Waiter w = new Waiter();
+
     new Thread(new Runnable() {
       public void run() {
         for (int i = 0; i < 5; i++)
-          resume();
+          w.resume();
       }
     }).start();
-    threadWait(0, 5);
+
+    w.await(0, 5);
   }
 }

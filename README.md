@@ -1,6 +1,6 @@
 # ConcurrentUnit 0.2.0
 
-A simple tool for performing assertions across threads in JUnit and TestNG.
+A simple tool for performing assertions across threads while unit testing.
 
 ## Introduction
 
@@ -8,30 +8,24 @@ ConcurrentUnit allows you to write tests capable of performing assertions or wai
 
 ## Setup
 
-Add ConcurrentUnit as a Maven dependency for either JUnit or TestNG (whatever you use):
+Add ConcurrentUnit as a Maven dependency:
 
 ```xml
 <dependency>
   <groupId>org.jodah</groupId>
   <artifactId>concurrentunit-junit</artifactId>
-  <version>0.2.0</version>
-</dependency>
-
-<dependency>
-  <groupId>org.jodah</groupId>
-  <artifactId>concurrentunit-testng</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
 </dependency>
 ```
 
 ## Usage
 
-* Extend `ConcurrentTestCase`
-* Use `threadWait` or `sleep` calls to block the main test thread while waiting for other threads to perform assertions. 
-* Use `threadAssert` calls from any thread to perform assertions. Assertion failures will result in the main thread being interrupted and the failure thrown.
-* Once expected assertions are completed, use a `resume` call to unblock the main thread.
+* Create a `Waiter`
+* Use `waiter.await` or `waiter.sleep` calls to block the main test thread while waiting for other threads to perform assertions. 
+* Use `waiter.assert` calls from any thread to perform assertions. Assertion failures will result in the main thread being interrupted and the failure thrown.
+* Once expected assertions are completed, use a `waiter.resume` call to unblock the main thread.
 
-If a blocking operation times out before all expected `resume` calls occur, the test is failed with a TimeoutException.
+If a blocking operation times out before all expected `waiter.resume` calls occur, the test is failed with a TimeoutException.
 
 ## Examples
 
@@ -40,14 +34,16 @@ Block the main thread while waiting for an assertion in a worker thread and resu
 ```java
 @Test
 public void shouldSucceed() throws Throwable {
+  final Waiter waiter = new Waiter();
+
   new Thread(new Runnable() {
     public void run() {
       threadAssertTrue(true);
-      resume();
+      waiter.resume();
     }
   }).start();
   
-  threadWait(100);
+  waiter.await(100);
 }
 ```
 
@@ -56,13 +52,15 @@ Handle a failed assertion:
 ```java
 @Test(expected = AssertionError.class)
 public void shouldFail() throws Throwable {
+  final Waiter waiter = new Waiter();
+
   new Thread(new Runnable() {
     public void run() {
-      threadAssertTrue(false);
+      waiter.assertTrue(false);
     }
   }).start();
   
-  threadWait(0);
+  waiter.await();
 }
 ```
 
@@ -76,7 +74,7 @@ public void sleepShouldSupportTimeouts() throws Throwable {
     }
   }).start();
   
-  threadWait(1);
+  new Waiter().await(1);
 }
 ```
 
@@ -85,15 +83,17 @@ Block the main thread while waiting for n number of resume calls:
 ```java
 @Test
 public void shouldSupportMultipleResumes() throws Throwable {
+  final Waiter waiter = new Waiter();
+
   final int resumeThreshold = 5;
   new Thread(new Runnable() {
     public void run() {
       for (int i = 0; i < resumeThreshold; i++)
-        resume();
+        waiter.resume();
     }
   }).start();
   
-  threadWait(500, resumeThreshold);
+  waiter.await(500, resumeThreshold);
 }
 ```
 
