@@ -1,6 +1,6 @@
 # ConcurrentUnit 0.2.0
 
-A simple tool for performing assertions across threads while unit testing.
+A simple, zero-dependency tool for performing assertions across threads while unit testing.
 
 ## Introduction
 
