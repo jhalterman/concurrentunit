@@ -97,6 +97,8 @@ public void shouldSupportMultipleResumes() throws Throwable {
 }
 ```
 
+More examples can be found in the [WaiterTest](https://github.com/jhalterman/concurrentunit/blob/master/src/test/java/org/jodah/concurrentunit/WaiterTest.java).
+
 ## References
 
 Thanks to the JSR-166 TCK authors for the initial inspiration.
