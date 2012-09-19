@@ -21,9 +21,9 @@ Add ConcurrentUnit as a Maven dependency:
 ## Usage
 
 * Create a `Waiter`
-* Use `waiter.await` or `waiter.sleep` calls to block the main test thread while waiting for other threads to perform assertions. 
-* Use `waiter.assert` calls from any thread to perform assertions. Assertion failures will result in the main thread being interrupted and the failure thrown.
-* Once expected assertions are completed, use a `waiter.resume` call to unblock the main thread.
+* Use `waiter.await` to block the main test thread while waiting for other threads to perform assertions. 
+* Use the `waiter.assert` calls from any thread to perform assertions. Assertion failures will result in the main thread being interrupted and the failure thrown.
+* Once expected assertions are completed, use `waiter.resume` call to unblock the main thread.
 
 If a blocking operation times out before all expected `waiter.resume` calls occur, the test is failed with a TimeoutException.
 
