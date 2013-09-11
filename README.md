@@ -119,6 +119,10 @@ class SomeTest extends ConcurrentTestCase {
 
 More examples can be found in the [WaiterTest](https://github.com/jhalterman/concurrentunit/blob/master/src/test/java/org/jodah/concurrentunit/WaiterTest.java).
 
+## Docs
+
+JavaDocs are available [here](https://jhalterman.github.com/concurrentunit/javadoc).
+
 ## References
 
 Thanks to the JSR-166 TCK authors for the initial inspiration.
