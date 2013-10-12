@@ -117,18 +117,16 @@ class SomeTest extends ConcurrentTestCase {
 }
 ```
 
-More examples can be found in the [WaiterTest](https://github.com/jhalterman/concurrentunit/blob/master/src/test/java/org/jodah/concurrentunit/WaiterTest.java).
+### Other Examples
+
+More examples can be found in the [WaiterTest](https://github.com/jhalterman/concurrentunit/blob/master/src/test/java/org/jodah/concurrentunit/WaiterTest.java) or in the following projects:
+
+* [Lyra](https://github.com/jhalterman/lyra/tree/master/src/test/java/net/jodah/lyra/internal/util/concurrent)
+* [ExpiringMap](https://github.com/jhalterman/expiringmap/blob/master/src/test/java/org/jodah/expiringmap/ExpiringMapTest.java)
 
 ## Docs
 
 JavaDocs are available [here](https://jhalterman.github.com/concurrentunit/javadoc).
-
-## Other Examples
-
-Here are a few example usages of ConcurrentUnit in other projects:
-
-* [Lyra](https://github.com/jhalterman/lyra/tree/master/src/test/java/net/jodah/lyra/internal/util/concurrent)
-* [ExpiringMap](https://github.com/jhalterman/expiringmap/blob/master/src/test/java/org/jodah/expiringmap/ExpiringMapTest.java)
 
 ## License
 
