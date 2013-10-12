@@ -123,9 +123,12 @@ More examples can be found in the [WaiterTest](https://github.com/jhalterman/con
 
 JavaDocs are available [here](https://jhalterman.github.com/concurrentunit/javadoc).
 
-## References
+## Other Examples
 
-Thanks to the JSR-166 TCK authors for the initial inspiration.
+Here are a few example usages of ConcurrentUnit in other projects:
+
+* [Lyra](https://github.com/jhalterman/lyra/tree/master/src/test/java/net/jodah/lyra/internal/util/concurrent)
+* [ExpiringMap](https://github.com/jhalterman/expiringmap/blob/master/src/test/java/org/jodah/expiringmap/ExpiringMapTest.java)
 
 ## License
 
