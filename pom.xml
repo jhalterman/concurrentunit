@@ -8,7 +8,7 @@
     <version>7</version>
   </parent>
 
-  <groupId>org.jodah</groupId>
+  <groupId>net.jodah</groupId>
   <artifactId>concurrentunit</artifactId>
   <version>0.3.1-SNAPSHOT</version>
   <name>ConcurrentUnit</name>
@@ -26,7 +26,7 @@
   <developers>
     <developer>
       <name>Jonathan Halterman</name>
-      <url>http://jodah.org</url>
+      <url>http://jodah.net</url>
     </developer>
   </developers>
 
