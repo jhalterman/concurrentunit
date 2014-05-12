@@ -29,7 +29,7 @@ Assertion failures will result in the main thread being interrupted and the fail
 
 ## Examples
 
-Block the main thread while waiting for an assertion in a worker thread and resume after completion:
+Perform an assertion from a worker thread while blocking the main thread until `resume` is called:
 
 ```java
 @Test
@@ -47,7 +47,28 @@ public void shouldSucceed() throws Throwable {
 }
 ```
 
-Handle a failed assertion:
+Multiple threads can be used along with any number of expected `resume` calls:
+
+```java
+@Test
+public void shouldSucceed() throws Throwable {
+  final Waiter waiter = new Waiter();
+  int expectedResumes = 5;
+
+  for (int i = 0; i < expectedResumes; i++) {
+    new Thread(new Runnable() {
+      public void run() {
+        waiter.assertTrue(true);
+        waiter.resume();
+      }
+    }).start();
+  }
+  
+  waiter.await(100, expectedResumes);
+}
+```
+
+Failed assertions from a worker thread are thrown by the main test thread as expected:
 
 ```java
 @Test(expected = AssertionError.class)
@@ -64,36 +85,17 @@ public void shouldFail() throws Throwable {
 }
 ```
 
-TimeoutException occurs if resume is not called before the wait duration is exceeded:
+TimeoutException is thrown if `resume` is not called before the await time is exceeded:
 
 ```java
 @Test(expected = TimeoutException.class)
-public void sleepShouldSupportTimeouts() throws Throwable {
+public void shouldTimeout() throws Throwable {
   new Thread(new Runnable() {
     public void run() {
     }
   }).start();
   
   new Waiter().await(1);
-}
-```
-
-Block the main thread while waiting for n number of resume calls:
-
-```java
-@Test
-public void shouldSupportMultipleResumes() throws Throwable {
-  final Waiter waiter = new Waiter();
-
-  final int resumeThreshold = 5;
-  new Thread(new Runnable() {
-    public void run() {
-      for (int i = 0; i < resumeThreshold; i++)
-        waiter.resume();
-    }
-  }).start();
-  
-  waiter.await(500, resumeThreshold);
 }
 ```
 
@@ -130,4 +132,4 @@ JavaDocs are available [here](https://jhalterman.github.com/concurrentunit/javad
 
 ## License
 
-Copyright 2010-2011 Jonathan Halterman - Released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).
+Copyright 2010-2014 Jonathan Halterman - Released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).

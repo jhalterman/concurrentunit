@@ -11,6 +11,22 @@ import org.testng.annotations.Test;
  */
 @Test
 public class WaiterTest {
+  @Test
+  public void shouldSupportMultipleThreads() throws Throwable {
+    final Waiter waiter = new Waiter();
+    int expectedResumes = 5;
+
+    for (int i = 0; i < expectedResumes; i++)
+      new Thread(new Runnable() {
+        public void run() {
+          waiter.assertTrue(true);
+          waiter.resume();
+        }
+      }).start();
+    
+    waiter.await(0, expectedResumes);
+  }
+  
   /**
    * Should throw an exception.
    */
@@ -94,7 +110,7 @@ public class WaiterTest {
       }
     }).start();
 
-    w.sleep(500);
+    w.sleep(10);
   }
 
   /**
