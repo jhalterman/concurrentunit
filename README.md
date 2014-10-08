@@ -124,7 +124,7 @@ class SomeTest extends ConcurrentTestCase {
 More examples can be found in the [WaiterTest](https://github.com/jhalterman/concurrentunit/blob/master/src/test/java/net/jodah/concurrentunit/WaiterTest.java) or in the following projects:
 
 * [Lyra](https://github.com/jhalterman/lyra/tree/master/src/test/java/net/jodah/lyra/internal/util/concurrent)
-* [ExpiringMap](https://github.com/jhalterman/expiringmap/blob/master/src/test/java/org/jodah/expiringmap/ExpiringMapTest.java)
+* [ExpiringMap](https://github.com/jhalterman/expiringmap/blob/master/src/test/java/net/jodah/expiringmap/ExpiringMapTest.java)
 
 ## Docs
 
