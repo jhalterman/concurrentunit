@@ -9,6 +9,20 @@ public abstract class ConcurrentTestCase {
   private final Waiter waiter = new Waiter();
 
   /**
+   * @see Waiter#expectResume()
+   */
+  public void expectResume() {
+    waiter.expectResume();
+  }
+  
+  /**
+   * @see Waiter#expectResumes(int)
+   */
+  public void expectResumes(int resumeNumber) {
+    waiter.expectResumes(resumeNumber);
+  }
+
+  /**
    * @see Waiter#assertEquals(Object, Object)
    */
   public void threadAssertEquals(Object x, Object y) {

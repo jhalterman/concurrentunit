@@ -9,10 +9,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Jonathan Halterman
  */
 public class Waiter {
-  private static final String TIMEOUT_MESSAGE = "Test timed out while waiting for an expected result";
+  private static final String TIMEOUT_MESSAGE =
+      "Test timed out while waiting for an expected result";
   private final Thread mainThread;
-  protected AtomicInteger waitCount;
-  protected Throwable failure;
+  private AtomicInteger remainingResumes = new AtomicInteger(0);
+  private volatile Throwable failure;
 
   /**
    * Creates a new Waiter.
@@ -62,19 +63,53 @@ public class Waiter {
   }
 
   /**
-   * Waits until {@link #resume()} is called, or the test is failed.
+   * Waits until {@link #resume()} is called the expected number of times, or the test is failed.
    * 
    * @throws IllegalStateException if called from outside the main test thread
-   * @throws Throwable the last reported test failure
+   * @throws TimeoutException if the operation times out while waiting for a result
+   * @throws Throwable if any assertion fails
    */
   public void await() throws Throwable {
+    await(0, 1);
+  }
+
+  /**
+   * Waits until the {@code waitDuration} has elapsed, {@link #resume()} is called the expected
+   * number of times, or the test is failed.
+   * 
+   * @param waitDuration Duration to wait in milliseconds
+   * @throws IllegalStateException if called from outside the main test thread
+   * @throws TimeoutException if the operation times out while waiting for a result
+   * @throws Throwable if any assertion fails
+   */
+  public void await(long waitDuration) throws Throwable {
+    await(waitDuration, 1);
+  }
+
+  /**
+   * Waits until the {@code waitDuration} has elapsed, {@link #resume()} is called
+   * {@code expectedResumes} times, or the test is failed.
+   * 
+   * @param waitDuration Duration to wait in milliseconds
+   * @param expectedResumes Number of times {@link #resume()} is expected to be called before the
+   *        awaiting thread is resumed
+   * @throws IllegalStateException if called from outside the main test thread
+   * @throws TimeoutException if the operation times out while waiting for a result
+   * @throws Throwable if any assertion fails
+   */
+  public void await(long waitDuration, int expectedResumes) throws Throwable {
     if (Thread.currentThread() != mainThread)
       throw new IllegalStateException("Must be called from within the main test thread");
 
+    remainingResumes.compareAndSet(0, expectedResumes);
     synchronized (this) {
+      // Loop to avoid spurious wakeups
       while (true) {
         try {
-          wait();
+          if (waitDuration < 0)
+            wait();
+          else
+            wait(waitDuration);
           throw new TimeoutException(TIMEOUT_MESSAGE);
         } catch (InterruptedException e) {
           if (failure != null) {
@@ -89,37 +124,17 @@ public class Waiter {
   }
 
   /**
-   * Waits until the {@code waitDuration} has elapsed, {@link #resume()} is called, or the test is
-   * failed. Delegates to {@link #sleep(long)} to avoid spurious wakeups.
-   * 
-   * @see #sleep(long)
+   * Instructs the waiter to expect {@link #resume()} to be called.
    */
-  public void await(long waitDuration) throws Throwable {
-    if (waitDuration == 0)
-      await();
-    else
-      sleep(waitDuration);
+  public void expectResume() {
+    remainingResumes.addAndGet(1);
   }
 
   /**
-   * Waits until the {@code waitDuration} has elapsed, {@link #resume()} is called
-   * {@code resumeThreshold} times, or the test is failed. Delegates to {@link #sleep(long, int)} to
-   * avoid spurious wakeups.
-   * 
-   * @param waitDuration Duration to wait
-   * @param resumeThreshold Number of times {@link #resume()} must be called before wait is
-   *          interrupted
-   * @throws IllegalStateException if called from outside the main test thread
-   * @throws TimeoutException if the operation times out while waiting for a result
-   * @throws Throwable the last reported test failure
+   * Instructs the waiter to expect the {@code resumeNumber} resumes to occur.
    */
-  public void await(long waitDuration, int resumeThreshold) throws Throwable {
-    if (waitDuration == 0) {
-      waitCount = new AtomicInteger(resumeThreshold);
-      await();
-      waitCount = null;
-    } else
-      sleep(waitDuration, resumeThreshold);
+  public void expectResumes(int resumeNumber) {
+    remainingResumes.addAndGet(resumeNumber);
   }
 
   /**
@@ -141,20 +156,29 @@ public class Waiter {
    */
   public void fail(Throwable reason) {
     failure = reason;
-    resume(mainThread);
+    mainThread.interrupt();
   }
 
   /**
-   * Decrements the wait count, resuming the test thread when {@link #resume()} calls have exceeded
-   * the resume threshold given when the test was made to wait.
+   * Gets the remaining number of expected resumes that must occur before any waiting/sleeping
+   * threads are unblocked.
+   */
+  public int getExpectedResumes() {
+    return remainingResumes.get();
+  }
+
+  /**
+   * Resumes the waiter when the expected number of {@link #resume()} calls have occurred.
+   * 
+   * @throws IllegalStateException if the waiter is not expecting resume to be called
    */
   public void resume() {
     resume(mainThread);
   }
 
   /**
-   * Resumes the waiter if {@code thread} is not the mainThread, the waitCount is null or the
-   * decremented waitCount is 0.
+   * Resumes the waiter if {@code thread} is not the mainThread or the expected number of resumes
+   * have occurred.
    * 
    * <p>
    * Note: This method is likely not very useful to call directly since a concurrent run of a test
@@ -162,21 +186,49 @@ public class Waiter {
    * the initiating thread and the thread where the resume call takes place.
    * 
    * @param thread Thread to resume
+   * @throws IllegalStateException if the waiter is not expecting resume to be called
    */
   public void resume(Thread thread) {
-    if (thread != mainThread || waitCount == null || waitCount.decrementAndGet() == 0)
+    if (thread != mainThread)
       thread.interrupt();
+    else {
+      int expectedResumes = remainingResumes.decrementAndGet();
+      if (expectedResumes < 0)
+        throw new IllegalStateException("The waiter is not expecting resume to be called");
+      if (expectedResumes == 0)
+        thread.interrupt();
+    }
   }
 
   /**
-   * Sleeps until the {@code sleepDuration} has elapsed, {@link #resume()} is called, or the test is
-   * failed.
+   * Sleeps until the {@code sleepDuration} has elapsed, {@link #resume()} is called the expected
+   * number of times, or the test is failed.
    * 
-   * @param sleepDuration
-   * @throws TimeoutException if the sleep operation times out while waiting for a result
-   * @throws Throwable the last reported test failure
+   * @param sleepDuration Duration to sleep in milliseconds
+   * @throws IllegalStateException if called from outside the main test thread
+   * @throws TimeoutException if the operation times out while waiting for a result
+   * @throws Throwable if any assertion fails
    */
   public void sleep(long sleepDuration) throws Throwable {
+    sleep(sleepDuration, 1);
+  }
+
+  /**
+   * Sleeps until the {@code sleepDuration} has elapsed, {@link #resume()} is called
+   * {@code expectedResumes} times, or the test is failed.
+   * 
+   * @param sleepDuration Duration to sleep in milliseconds
+   * @param expectedResumes Number of times {@link #resume()} is expected to be called before the
+   *        sleeping thread is resumed
+   * @throws IllegalStateException if called from outside the main test thread
+   * @throws TimeoutException if the operation times out while waiting for a result
+   * @throws Throwable if any assertion fails
+   */
+  public void sleep(long sleepDuration, int expectedResumes) throws Throwable {
+    if (Thread.currentThread() != mainThread)
+      throw new IllegalStateException("Must be called from within the main test thread");
+
+    remainingResumes.compareAndSet(0, expectedResumes);
     try {
       Thread.sleep(sleepDuration);
       throw new TimeoutException(TIMEOUT_MESSAGE);
@@ -188,21 +240,6 @@ public class Waiter {
         throw f;
       }
     }
-  }
-
-  /**
-   * Sleeps until the {@code sleepDuration} has elapsed, {@link #resume()} is called
-   * {@code resumeThreshold} times, or the test is failed.
-   * 
-   * @see #await(long, int)
-   */
-  public void sleep(long sleepDuration, int resumeThreshold) throws Throwable {
-    if (Thread.currentThread() != mainThread)
-      throw new IllegalStateException("Must be called from within the main test thread");
-
-    waitCount = new AtomicInteger(resumeThreshold);
-    sleep(sleepDuration);
-    waitCount = null;
   }
 
   private String format(Object actual, Object expected) {

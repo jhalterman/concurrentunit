@@ -21,9 +21,13 @@ Add ConcurrentUnit as a Maven dependency:
 ## Usage
 
 * Create a `Waiter`
-* Use `waiter.await` to block the main test thread while waiting for other threads to perform assertions. 
+* Use `waiter.await` to block the main test thread while waiting for other threads to perform assertions.
 * Use the `waiter.assert` calls from any thread to perform assertions. 
 * Once expected assertions are completed, use `waiter.resume` call to unblock the main thread.
+
+Optional:
+
+* Use `waiter.expectResumes` to indicate the number of `resume` calls the waiter should expect. This is useful when `resume` may be called by some thread prior to `await`.
 
 Assertion failures will result in the main thread being interrupted and the failure thrown. If a blocking operation times out before all expected `waiter.resume` calls occur, the test is failed with a TimeoutException.
 
@@ -33,17 +37,20 @@ Perform an assertion from a worker thread while blocking the main thread until `
 
 ```java
 @Test
-public void shouldSucceed() throws Throwable {
+public void shouldWaitForResume() throws Throwable {
   final Waiter waiter = new Waiter();
 
+  // Start worker thread that performs an assertion after some delay, then resumes the waiter
   new Thread(new Runnable() {
     public void run() {
+      delayFor(100);
       waiter.assertTrue(true);
       waiter.resume();
     }
   }).start();
   
-  waiter.await(100);
+  // Waits for resume to be called
+  waiter.await(1000);
 }
 ```
 
@@ -51,9 +58,10 @@ Multiple threads can be used along with any number of expected `resume` calls:
 
 ```java
 @Test
-public void shouldSucceed() throws Throwable {
+public void shouldWaitForResumes() throws Throwable {
   final Waiter waiter = new Waiter();
   int expectedResumes = 5;
+  waiter.expectResumes(expectedResumes);
 
   for (int i = 0; i < expectedResumes; i++) {
     new Thread(new Runnable() {
@@ -64,7 +72,7 @@ public void shouldSucceed() throws Throwable {
     }).start();
   }
   
-  waiter.await(100, expectedResumes);
+  waiter.await(1000);
 }
 ```
 
@@ -77,6 +85,7 @@ public void shouldFail() throws Throwable {
 
   new Thread(new Runnable() {
     public void run() {
+      delayFor(100);
       waiter.assertTrue(false);
     }
   }).start();
@@ -90,11 +99,6 @@ TimeoutException is thrown if `resume` is not called before the await time is ex
 ```java
 @Test(expected = TimeoutException.class)
 public void shouldTimeout() throws Throwable {
-  new Thread(new Runnable() {
-    public void run() {
-    }
-  }).start();
-  
   new Waiter().await(1);
 }
 ```
@@ -109,12 +113,13 @@ class SomeTest extends ConcurrentTestCase {
 	public void shouldSucceed() throws Throwable {
 	  new Thread(new Runnable() {
 	    public void run() {
+	      delayFor(100);
 	      threadAssertTrue(true);
 	      resume();
 	    }
 	  }).start();
 	  
-	  await(100);
+	  await(1000);
 	}
 }
 ```

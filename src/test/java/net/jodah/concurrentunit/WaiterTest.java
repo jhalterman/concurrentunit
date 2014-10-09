@@ -15,6 +15,7 @@ public class WaiterTest {
   public void shouldSupportMultipleThreads() throws Throwable {
     final Waiter waiter = new Waiter();
     int expectedResumes = 5;
+    waiter.expectResumes(expectedResumes);
 
     for (int i = 0; i < expectedResumes; i++)
       new Thread(new Runnable() {
@@ -23,10 +24,10 @@ public class WaiterTest {
           waiter.resume();
         }
       }).start();
-    
-    waiter.await(0, expectedResumes);
+
+    waiter.await(0);
   }
-  
+
   /**
    * Should throw an exception.
    */
@@ -35,6 +36,7 @@ public class WaiterTest {
 
     new Thread(new Runnable() {
       public void run() {
+        waitForMainThread();
         w.resume();
       }
     }).start();
@@ -71,6 +73,7 @@ public class WaiterTest {
 
     new Thread(new Runnable() {
       public void run() {
+        waitForMainThread();
         w.assertTrue(false);
       }
     }).start();
@@ -86,14 +89,7 @@ public class WaiterTest {
   @Test(expectedExceptions = TimeoutException.class)
   public void waitShouldSupportTimeouts() throws Throwable {
     final Waiter w = new Waiter();
-
-    new Thread(new Runnable() {
-      public void run() {
-        w.assertTrue(true);
-      }
-    }).start();
-
-    w.await(500);
+    w.await(10);
   }
 
   /**
@@ -104,12 +100,6 @@ public class WaiterTest {
   @Test(expectedExceptions = TimeoutException.class)
   public void sleepShouldSupportTimeouts() throws Throwable {
     final Waiter w = new Waiter();
-
-    new Thread(new Runnable() {
-      public void run() {
-      }
-    }).start();
-
     w.sleep(10);
   }
 
@@ -123,11 +113,12 @@ public class WaiterTest {
 
     new Thread(new Runnable() {
       public void run() {
+        waitForMainThread();
         w.resume();
       }
     }).start();
 
-    w.sleep(50000);
+    w.sleep(5000);
   }
 
   /**
@@ -141,6 +132,7 @@ public class WaiterTest {
 
     new Thread(new Runnable() {
       public void run() {
+        waitForMainThread();
         w.assertTrue(false);
       }
     }).start();
@@ -158,6 +150,7 @@ public class WaiterTest {
 
     new Thread(new Runnable() {
       public void run() {
+        waitForMainThread();
         for (int i = 0; i < 5; i++)
           w.resume();
       }
@@ -171,11 +164,29 @@ public class WaiterTest {
 
     new Thread(new Runnable() {
       public void run() {
+        waitForMainThread();
         for (int i = 0; i < 5; i++)
           w.resume();
       }
     }).start();
 
     w.await(0, 5);
+  }
+
+  @Test(expectedExceptions = IllegalStateException.class)
+  public void shouldThrowWhenResumingWithoutWait() throws Throwable {
+    Waiter w = new Waiter();
+    w.resume();
+    w.await();
+  }
+
+  /**
+   * Waits momentarily to allow the main thread to start blocking.
+   */
+  private void waitForMainThread() {
+    try {
+      Thread.sleep(250);
+    } catch (InterruptedException e) {
+    }
   }
 }
