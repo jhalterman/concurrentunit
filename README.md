@@ -1,4 +1,4 @@
-# ConcurrentUnit
+# ConcurrentUnit [![Build Status](https://travis-ci.org/jhalterman/concurrentunit.png)](https://travis-ci.org/jhalterman/concurrentunit)
 
 A simple, zero-dependency tool for performing assertions across threads while unit testing.
 
