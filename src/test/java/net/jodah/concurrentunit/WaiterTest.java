@@ -2,8 +2,6 @@ package net.jodah.concurrentunit;
 
 import java.util.concurrent.TimeoutException;
 
-import net.jodah.concurrentunit.Waiter;
-
 import org.testng.annotations.Test;
 
 /**
@@ -177,6 +175,26 @@ public class WaiterTest {
   public void shouldThrowWhenResumingWithoutWait() throws Throwable {
     Waiter w = new Waiter();
     w.resume();
+    w.await();
+  }
+
+  @Test(expectedExceptions = AssertionError.class)
+  public void shouldFailNullAssertionWithReason() throws Throwable {
+    Waiter w = new Waiter();
+    w.assertNull("test");
+  }
+
+  @Test(expectedExceptions = AssertionError.class)
+  public void shouldFailNullAssertionFromWorkerThreadWithReason() throws Throwable {
+    final Waiter w = new Waiter();
+
+    new Thread(new Runnable() {
+      public void run() {
+        waitForMainThread();
+        w.assertNull("test");
+      }
+    }).start();
+
     w.await();
   }
 

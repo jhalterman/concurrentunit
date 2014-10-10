@@ -35,7 +35,7 @@ public class Waiter {
    */
   public void assertFalse(boolean condition) {
     if (condition)
-      fail();
+      fail("expected false");
   }
 
   /**
@@ -43,7 +43,7 @@ public class Waiter {
    */
   public void assertNotNull(Object object) {
     if (object == null)
-      fail();
+      fail("expected not null");
   }
 
   /**
@@ -51,7 +51,7 @@ public class Waiter {
    */
   public void assertNull(Object object) {
     if (object != null)
-      fail();
+      fail(format("null", object));
   }
 
   /**
@@ -59,7 +59,7 @@ public class Waiter {
    */
   public void assertTrue(boolean condition) {
     if (!condition)
-      fail();
+      fail("expected true");
   }
 
   /**
@@ -155,6 +155,17 @@ public class Waiter {
    * Fails the current test with the given {@code reason}.
    */
   public void fail(Throwable reason) {
+    if (Thread.currentThread() == mainThread) {
+      AssertionError ae = null;
+      if (reason instanceof AssertionError)
+        ae = (AssertionError) reason;
+      else {
+        ae = new AssertionError();
+        ae.initCause(reason);
+      }
+      throw ae;
+    }
+
     failure = reason;
     mainThread.interrupt();
   }
@@ -242,7 +253,7 @@ public class Waiter {
     }
   }
 
-  private String format(Object actual, Object expected) {
+  private String format(Object expected, Object actual) {
     return "expected:<" + expected + "> but was:<" + actual + ">";
   }
 }
