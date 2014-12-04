@@ -43,7 +43,7 @@ public void shouldWaitForResume() throws Throwable {
   // Start worker thread that performs an assertion after some delay, then resumes the waiter
   new Thread(new Runnable() {
     public void run() {
-      delayFor(100);
+      doSomeWork();
       waiter.assertTrue(true);
       waiter.resume();
     }
