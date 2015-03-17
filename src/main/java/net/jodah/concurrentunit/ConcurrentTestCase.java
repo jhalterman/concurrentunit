@@ -25,8 +25,8 @@ public abstract class ConcurrentTestCase {
   /**
    * @see Waiter#assertEquals(Object, Object)
    */
-  public void threadAssertEquals(Object x, Object y) {
-    waiter.assertEquals(x, y);
+  public void threadAssertEquals(Object expected, Object actual) {
+    waiter.assertEquals(expected, actual);
   }
 
   /**

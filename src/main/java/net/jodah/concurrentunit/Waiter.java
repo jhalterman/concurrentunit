@@ -22,7 +22,7 @@ public class Waiter {
     mainThread = Thread.currentThread();
   }
 
-  public void assertEquals(Object actual, Object expected) {
+  public void assertEquals(Object expected, Object actual) {
     if (expected == null && actual == null)
       return;
     if (expected != null && expected.equals(actual))
