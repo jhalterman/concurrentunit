@@ -105,7 +105,7 @@ public void shouldTimeout() throws Throwable {
 
 ### Alternatively
 
-As a more consise alternative to using the `Waiter` class directly, you can extend the `ConcurrentTestCase` convenience class:
+As a more concise alternative to using the `Waiter` class, you can extend the `ConcurrentTestCase`:
 
 ```java
 class SomeTest extends ConcurrentTestCase {
