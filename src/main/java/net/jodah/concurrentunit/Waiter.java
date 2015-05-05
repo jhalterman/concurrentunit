@@ -9,8 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Jonathan Halterman
  */
 public class Waiter {
-  private static final String TIMEOUT_MESSAGE =
-      "Test timed out while waiting for an expected result";
+  private static final String TIMEOUT_MESSAGE = "Test timed out while waiting for an expected result";
   private final Thread mainThread;
   private AtomicInteger remainingResumes = new AtomicInteger(0);
   private volatile Throwable failure;
@@ -92,7 +91,7 @@ public class Waiter {
    * 
    * @param waitDuration Duration to wait in milliseconds
    * @param expectedResumes Number of times {@link #resume()} is expected to be called before the
-   *        awaiting thread is resumed
+   *          awaiting thread is resumed
    * @throws IllegalStateException if called from outside the main test thread
    * @throws TimeoutException if the operation times out while waiting for a result
    * @throws Throwable if any assertion fails
@@ -152,22 +151,26 @@ public class Waiter {
   }
 
   /**
-   * Fails the current test with the given {@code reason}.
+   * Fails the current test with the given {@code reason}, sets the number of expected resumes to 0,
+   * and throws the {@code reason} in the current thread and the main test thread.
    */
   public void fail(Throwable reason) {
-    if (Thread.currentThread() == mainThread) {
-      AssertionError ae = null;
-      if (reason instanceof AssertionError)
-        ae = (AssertionError) reason;
-      else {
-        ae = new AssertionError();
-        ae.initCause(reason);
-      }
-      throw ae;
+    remainingResumes.set(0);
+
+    AssertionError ae = null;
+    if (reason instanceof AssertionError)
+      ae = (AssertionError) reason;
+    else {
+      ae = new AssertionError();
+      ae.initCause(reason);
     }
+
+    if (Thread.currentThread() == mainThread)
+      throw ae;
 
     failure = reason;
     mainThread.interrupt();
+    throw ae;
   }
 
   /**
@@ -230,7 +233,7 @@ public class Waiter {
    * 
    * @param sleepDuration Duration to sleep in milliseconds
    * @param expectedResumes Number of times {@link #resume()} is expected to be called before the
-   *        sleeping thread is resumed
+   *          sleeping thread is resumed
    * @throws IllegalStateException if called from outside the main test thread
    * @throws TimeoutException if the operation times out while waiting for a result
    * @throws Throwable if any assertion fails

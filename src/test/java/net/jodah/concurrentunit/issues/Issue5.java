@@ -25,6 +25,7 @@ public class Issue5 {
       @Override
       public void run() {
         waiter.assertTrue(false);
+        waiter.resume();
       }
     }).start();
     waiter.await(100);
