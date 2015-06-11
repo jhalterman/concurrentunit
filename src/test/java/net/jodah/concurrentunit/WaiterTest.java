@@ -198,6 +198,20 @@ public class WaiterTest {
     w.await();
   }
 
+  @Test(expectedExceptions = IllegalArgumentException.class)
+  public void shouldHandleUncaughtException() throws Throwable {
+    Waiter waiter = new Waiter();
+    waiter.failOnUncaughtException();
+
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        throw new IllegalArgumentException();
+      }
+    }).start();
+    waiter.await();
+  }
+  
   /**
    * Waits momentarily to allow the main thread to start blocking.
    */

@@ -1,5 +1,6 @@
 package net.jodah.concurrentunit;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -171,6 +172,18 @@ public class Waiter {
     failure = reason;
     mainThread.interrupt();
     throw ae;
+  }
+  
+  /**
+   * Fails the current test if an uncaught exception occurs in any thread.
+   */
+  public void failOnUncaughtException() {
+    Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler(){
+      @Override
+      public void uncaughtException(Thread arg0, Throwable failure) {
+        fail(failure);
+      }
+    });
   }
 
   /**

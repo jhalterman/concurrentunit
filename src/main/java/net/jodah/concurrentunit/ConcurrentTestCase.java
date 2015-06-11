@@ -79,6 +79,13 @@ public abstract class ConcurrentTestCase {
   }
 
   /**
+   * @see Waiter#failOnUncaughtException()
+   */
+  public void failOnUncaughtException() {
+    waiter.failOnUncaughtException();
+  }
+  
+  /**
    * @see Waiter#await()
    */
   protected void await() throws Throwable {

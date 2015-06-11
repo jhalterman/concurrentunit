@@ -103,6 +103,25 @@ public void shouldTimeout() throws Throwable {
 }
 ```
 
+Failures that occur from uncontrolled threads can also be handled via `Waiter.failOnUncaughtException`:
+
+```java
+@Test(expected = IllegalArgumentException.class)
+public void uncaughtException() throws Throwable {
+  Waiter waiter = new Waiter();
+  waiter.failOnUncaughtException();
+
+  new Thread(new Runnable() {
+    @Override
+    public void run() {
+      throw new IllegalArgumentException();
+    }
+  }).start();
+  
+  waiter.await();
+}
+```
+
 ### Alternatively
 
 As a more concise alternative to using the `Waiter` class, you can extend the `ConcurrentTestCase`:
