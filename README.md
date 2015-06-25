@@ -1,35 +1,25 @@
-# ConcurrentUnit [![Build Status](https://travis-ci.org/jhalterman/concurrentunit.png)](https://travis-ci.org/jhalterman/concurrentunit)
+# ConcurrentUnit
+[![Build Status](https://travis-ci.org/jhalterman/concurrentunit.svg)](https://travis-ci.org/jhalterman/concurrentunit)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jodah/concurrentunit/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jodah/concurrentunit) 
 
-A simple, zero-dependency tool for testing multi-threaded code.
+A simple, zero-dependency toolkit for testing multi-threaded code.
 
 ## Introduction
 
-ConcurrentUnit allows you to write tests capable of performing assertions or waiting for expected operations across multiple threads, with failures being properly reported back to the main test thread. If an assertion fails, your test fails, regardless of which thread the assertion came from.
-
-## Setup
-
-Add ConcurrentUnit as a Maven dependency:
-
-```xml
-<dependency>
-  <groupId>net.jodah</groupId>
-  <artifactId>concurrentunit</artifactId>
-  <version>0.3.3</version>
-</dependency>
-```
+ConcurrentUnit was created to help developers test multi-threaded code. It allows you to perform assertions and wait for operations across multiple threads, with failures being properly reported back to the main test thread. If an assertion fails, your test fails, regardless of which thread the assertion came from.
 
 ## Usage
 
-* Create a `Waiter`
-* Use `waiter.await` to block the main test thread while waiting for other threads to perform assertions.
-* Use the `waiter.assert` calls from any thread to perform assertions. 
-* Once expected assertions are completed, use `waiter.resume` call to unblock the main thread.
+1. Create a `Waiter`
+2. Use `Waiter.await` to block the main test thread while waiting for other threads to perform assertions.
+3. Use the `Waiter.assert` calls from any thread to perform assertions. 
+4. Once expected assertions are completed, use `Waiter.resume` call to unblock the main thread.
 
-Optional:
+Optionally:
 
-* Use `waiter.expectResumes` to indicate the number of `resume` calls the waiter should expect. This is useful when `resume` may be called by some thread prior to `await`.
+* Use `Waiter.expectResumes` to indicate the number of `resume` calls the waiter should expect. This is useful when `resume` may be called by some thread prior to `await`.
 
-Assertion failures will result in the main thread being interrupted and the failure thrown. If a blocking operation times out before all expected `waiter.resume` calls occur, the test is failed with a TimeoutException.
+When your test runs, assertion failures will result in the main thread being interrupted and the failure thrown. If an `await` call times out before all expected `resume` calls occur, the test is failed with a `TimeoutException`.
 
 ## Examples
 
@@ -126,10 +116,11 @@ class SomeTest extends ConcurrentTestCase {
 
 ### Other Examples
 
-More examples can be found in the [WaiterTest](https://github.com/jhalterman/concurrentunit/blob/master/src/test/java/net/jodah/concurrentunit/WaiterTest.java) or in the following projects:
+More example usages can be found in the [WaiterTest](https://github.com/jhalterman/concurrentunit/blob/master/src/test/java/net/jodah/concurrentunit/WaiterTest.java) or in the following projects:
 
 * [Lyra](https://github.com/jhalterman/lyra/tree/master/src/test/java/net/jodah/lyra/internal/util/concurrent)
 * [ExpiringMap](https://github.com/jhalterman/expiringmap/blob/master/src/test/java/net/jodah/expiringmap/ExpiringMapTest.java)
+* [Copycat](https://github.com/kuujo/copycat)
 
 ## Docs
 
