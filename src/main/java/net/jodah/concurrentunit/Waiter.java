@@ -111,6 +111,7 @@ public class Waiter {
             wait(waitDuration);
           throw new TimeoutException(TIMEOUT_MESSAGE);
         } catch (InterruptedException e) {
+          remainingResumes.set(0);
           if (failure != null) {
             Throwable f = failure;
             failure = null;
@@ -248,6 +249,7 @@ public class Waiter {
       throw new TimeoutException(TIMEOUT_MESSAGE);
     } catch (InterruptedException ignored) {
     } finally {
+      remainingResumes.set(0);
       if (failure != null) {
         Throwable f = failure;
         failure = null;

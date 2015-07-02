@@ -197,7 +197,17 @@ public class WaiterTest {
 
     w.await();
   }
-
+  
+  public void shouldSupportSuccessiveResumes()throws Throwable {
+    final Waiter w = new Waiter();
+    w.expectResume();
+    w.resume();
+    w.await();
+    w.expectResume();
+    w.resume();
+    w.await();
+  }
+  
   /**
    * Waits momentarily to allow the main thread to start blocking.
    */
