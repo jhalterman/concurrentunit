@@ -119,6 +119,7 @@ class SomeTest extends ConcurrentTestCase {
 More example usages can be found in the [WaiterTest](https://github.com/jhalterman/concurrentunit/blob/master/src/test/java/net/jodah/concurrentunit/WaiterTest.java) or in the following projects:
 
 * [Lyra](https://github.com/jhalterman/lyra/tree/master/src/test/java/net/jodah/lyra/internal/util/concurrent)
+* [Recurrent](https://github.com/jhalterman/recurrent/blob/master/src/test/java/net/jodah/recurrent/RecurrentTest.java)
 * [ExpiringMap](https://github.com/jhalterman/expiringmap/blob/master/src/test/java/net/jodah/expiringmap/ExpiringMapTest.java)
 * [Copycat](https://github.com/kuujo/copycat)
 
@@ -128,4 +129,4 @@ JavaDocs are available [here](https://jhalterman.github.com/concurrentunit/javad
 
 ## License
 
-Copyright 2010-2014 Jonathan Halterman - Released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).
+Copyright 2010-2015 Jonathan Halterman - Released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).

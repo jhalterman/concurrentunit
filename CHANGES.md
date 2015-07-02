@@ -1,3 +1,9 @@
+# 0.3.4
+
+### Bug Fixes
+
+* Always reset remaining resumes on interrupt
+
 # 0.3.3
 
 ### Bug Fixes
