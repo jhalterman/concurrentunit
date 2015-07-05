@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>TestNG:  Unit Test</title>
+<style type="text/css">
+table caption,table.info_table,table.param,table.passed,table.failed {margin-bottom:10px;border:1px solid #000099;border-collapse:collapse;empty-cells:show;}
+table.info_table td,table.info_table th,table.param td,table.param th,table.passed td,table.passed th,table.failed td,table.failed th {
+border:1px solid #000099;padding:.25em .5em .25em .5em
+}
+table.param th {vertical-align:bottom}
+td.numi,th.numi,td.numi_attn {
+text-align:right
+}
+tr.total td {font-weight:bold}
+table caption {
+text-align:center;font-weight:bold;
+}
+table.passed tr.stripe td,table tr.passedodd td {background-color: #00AA00;}
+table.passed td,table tr.passedeven td {background-color: #33FF33;}
+table.passed tr.stripe td,table tr.skippedodd td {background-color: #cccccc;}
+table.passed td,table tr.skippedodd td {background-color: #dddddd;}
+table.failed tr.stripe td,table tr.failedodd td,table.param td.numi_attn {background-color: #FF3333;}
+table.failed td,table tr.failedeven td,table.param tr.stripe td.numi_attn {background-color: #DD0000;}
+tr.stripe td,tr.stripe th {background-color: #E6EBF9;}
+p.totop {font-size:85%;text-align:center;border-bottom:2px black solid}
+div.shootout {padding:2em;border:3px #4854A8 solid}
+</style>
+</head>
+<body>
+<table cellspacing=0 cellpadding=0 class="param">
+<tr><th>Test</th><th class="numi">Methods<br/>Passed</th><th class="numi">Scenarios<br/>Passed</th><th class="numi"># skipped</th><th class="numi"># failed</th><th class="numi">Total<br/>Time</th><th class="numi">Included<br/>Groups</th><th class="numi">Excluded<br/>Groups</th></tr>
+<tr><td style="text-align:left;padding-right:2em">Command line test</td><td class="numi">20</td><td class="numi">20</td><td class="numi">0</td><td class="numi">0</td><td class="numi">3.4 seconds</td><td class="numi"></td><td class="numi"></td></tr>
+</table>
+<a id="summary"></a>
+<table cellspacing=0 cellpadding=0 class="passed">
+<tr><th>Class</th><th>Method</th><th># of<br/>Scenarios</th><th>Start</th><th>Time<br/>(ms)</th></tr>
+<tr><th colspan="4">Command line test &#8212; passed</th></tr>
+<tr class="passedodd"><td rowspan="9">net.jodah.concurrentunit.internal.ReentrantCircuitTest<td><a href="#m1"><b>shouldHandleConcurrentWaiters</b>  </a></td><td class="numi">1</td><td>1436076931537</td><td class="numi">1007</td></tr><tr class="passedodd"><td><a href="#m2"><b>shouldHandleOpenCloseCycles</b>  </a></td><td class="numi">1</td><td>1436076932545</td><td class="numi">1</td></tr><tr class="passedodd"><td><a href="#m3"><b>shouldHandleRepeatedClosed</b>  </a></td><td class="numi">1</td><td>1436076932547</td><td class="numi">0</td></tr><tr class="passedodd"><td><a href="#m4"><b>shouldHandleRepeatedOpens</b>  </a></td><td class="numi">1</td><td>1436076932548</td><td class="numi">0</td></tr><tr class="passedodd"><td><a href="#m5"><b>shouldHandleSequentialWaiters</b>  </a></td><td class="numi">1</td><td>1436076932549</td><td class="numi">506</td></tr><tr class="passedodd"><td><a href="#m6"><b>shouldInitiallyBeClosed</b>  </a></td><td class="numi">1</td><td>1436076933056</td><td class="numi">0</td></tr><tr class="passedodd"><td><a href="#m7"><b>shouldInterruptWaiters</b>  </a></td><td class="numi">1</td><td>1436076933056</td><td class="numi">306</td></tr><tr class="passedodd"><td><a href="#m8"><b>shouldNotBlockOpenWhenSyncAcquired</b>  </a></td><td class="numi">1</td><td>1436076933362</td><td class="numi">306</td></tr><tr class="passedodd"><td><a href="#m9"><b>shouldReturnWhenAwaitAndAlreadyClosed</b>  </a></td><td class="numi">1</td><td>1436076933669</td><td class="numi">0</td></tr>
+<tr class="passedeven"><td rowspan="11">net.jodah.concurrentunit.WaiterTest<td><a href="#m10"><b>shouldFailNullAssertionFromWorkerThreadWithReason</b>  </a></td><td class="numi">1</td><td>1436076933670</td><td class="numi">254</td></tr><tr class="passedeven"><td><a href="#m11"><b>shouldFailNullAssertionWithReason</b>  </a></td><td class="numi">1</td><td>1436076933925</td><td class="numi">0</td></tr><tr class="passedeven"><td><a href="#m12"><b>shouldSupportMultipleResumes</b>  </a></td><td class="numi">1</td><td>1436076933925</td><td class="numi">254</td></tr><tr class="passedeven"><td><a href="#m13"><b>shouldSupportMultipleThreads</b>  </a></td><td class="numi">1</td><td>1436076934180</td><td class="numi">1</td></tr><tr class="passedeven"><td><a href="#m14"><b>shouldSupportSuccessiveResumes</b>  </a></td><td class="numi">1</td><td>1436076934181</td><td class="numi">0</td></tr><tr class="passedeven"><td><a href="#m15"><b>shouldSupportThreadWait0WithResumeCount</b>  </a></td><td class="numi">1</td><td>1436076934181</td><td class="numi">256</td></tr><tr class="passedeven"><td><a href="#m16"><b>shouldThrowWhenResumingWithoutWait</b>  </a></td><td class="numi">1</td><td>1436076934438</td><td class="numi">0</td></tr><tr class="passedeven"><td><a href="#m17"><b>waitShouldSupportAssertionErrors</b>  </a></td><td class="numi">1</td><td>1436076934438</td><td class="numi">256</td></tr><tr class="passedeven"><td><a href="#m18"><b>waitShouldSupportExceptions</b>  </a></td><td class="numi">1</td><td>1436076934694</td><td class="numi">1</td></tr><tr class="passedeven"><td><a href="#m19"><b>waitShouldSupportResume</b>  </a></td><td class="numi">1</td><td>1436076934695</td><td class="numi">256</td></tr><tr class="passedeven"><td><a href="#m20"><b>waitShouldSupportTimeouts</b>  </a></td><td class="numi">1</td><td>1436076934951</td><td class="numi">13</td></tr>
+</table>
+<h1>Command line test</h1>
+<a id="m1"></a><h2>net.jodah.concurrentunit.internal.ReentrantCircuitTest:shouldHandleOpenCloseCycles</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m2"></a><h2>net.jodah.concurrentunit.internal.ReentrantCircuitTest:shouldNotBlockOpenWhenSyncAcquired</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m3"></a><h2>net.jodah.concurrentunit.internal.ReentrantCircuitTest:shouldHandleRepeatedClosed</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m4"></a><h2>net.jodah.concurrentunit.internal.ReentrantCircuitTest:shouldInitiallyBeClosed</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m5"></a><h2>net.jodah.concurrentunit.WaiterTest:shouldSupportMultipleThreads</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m6"></a><h2>net.jodah.concurrentunit.WaiterTest:shouldSupportThreadWait0WithResumeCount</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m7"></a><h2>net.jodah.concurrentunit.WaiterTest:shouldSupportMultipleResumes</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m8"></a><h2>net.jodah.concurrentunit.internal.ReentrantCircuitTest:shouldInterruptWaiters</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m9"></a><h2>net.jodah.concurrentunit.WaiterTest:shouldFailNullAssertionFromWorkerThreadWithReason</h2>
+<div style="padding-left:3em">
+<p>expected:&lt;null&gt; but was:&lt;test&gt;</p>
+net.jodah.concurrentunit.Waiter.fail(Waiter.java:182)
+<br/>at net.jodah.concurrentunit.Waiter.assertNull(Waiter.java:58)
+<br/>at net.jodah.concurrentunit.WaiterTest$7.run(WaiterTest.java:146)
+<br/>at java.lang.Thread.run(Thread.java:722)
+<br/>1 lines not shown
+</div>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m10"></a><h2>net.jodah.concurrentunit.internal.ReentrantCircuitTest:shouldReturnWhenAwaitAndAlreadyClosed</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m11"></a><h2>net.jodah.concurrentunit.WaiterTest:waitShouldSupportAssertionErrors</h2>
+<div style="padding-left:3em">
+<p>expected true</p>
+net.jodah.concurrentunit.Waiter.fail(Waiter.java:182)
+<br/>at net.jodah.concurrentunit.Waiter.assertTrue(Waiter.java:66)
+<br/>at net.jodah.concurrentunit.WaiterTest$4.run(WaiterTest.java:75)
+<br/>at java.lang.Thread.run(Thread.java:722)
+<br/>1 lines not shown
+</div>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m12"></a><h2>net.jodah.concurrentunit.WaiterTest:shouldSupportSuccessiveResumes</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m13"></a><h2>net.jodah.concurrentunit.WaiterTest:waitShouldSupportResume</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m14"></a><h2>net.jodah.concurrentunit.WaiterTest:waitShouldSupportExceptions</h2>
+<div style="padding-left:3em">
+<p>null</p>
+net.jodah.concurrentunit.WaiterTest$3.run(WaiterTest.java:55)
+<br/>at java.lang.Thread.run(Thread.java:722)
+<br/>1 lines not shown
+</div>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m15"></a><h2>net.jodah.concurrentunit.WaiterTest:shouldThrowWhenResumingWithoutWait</h2>
+<div style="padding-left:3em">
+<p>The waiter is not expecting resume to be called</p>
+net.jodah.concurrentunit.Waiter.resume(Waiter.java:241)
+<br/>at net.jodah.concurrentunit.Waiter.resume(Waiter.java:221)
+<br/>at net.jodah.concurrentunit.WaiterTest.shouldThrowWhenResumingWithoutWait(WaiterTest.java:129)
+<br/>35 lines not shown
+</div>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m16"></a><h2>net.jodah.concurrentunit.WaiterTest:waitShouldSupportTimeouts</h2>
+<div style="padding-left:3em">
+<p>Test timed out while waiting for an expected result</p>
+net.jodah.concurrentunit.Waiter.await(Waiter.java:144)
+<br/>at net.jodah.concurrentunit.Waiter.await(Waiter.java:90)
+<br/>at net.jodah.concurrentunit.WaiterTest.waitShouldSupportTimeouts(WaiterTest.java:90)
+<br/>35 lines not shown
+</div>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m17"></a><h2>net.jodah.concurrentunit.internal.ReentrantCircuitTest:shouldHandleSequentialWaiters</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m18"></a><h2>net.jodah.concurrentunit.WaiterTest:shouldFailNullAssertionWithReason</h2>
+<div style="padding-left:3em">
+<p>expected:&lt;null&gt; but was:&lt;test&gt;</p>
+net.jodah.concurrentunit.Waiter.fail(Waiter.java:182)
+<br/>at net.jodah.concurrentunit.Waiter.assertNull(Waiter.java:58)
+<br/>at net.jodah.concurrentunit.WaiterTest.shouldFailNullAssertionWithReason(WaiterTest.java:136)
+<br/>35 lines not shown
+</div>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m19"></a><h2>net.jodah.concurrentunit.internal.ReentrantCircuitTest:shouldHandleRepeatedOpens</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+<a id="m20"></a><h2>net.jodah.concurrentunit.internal.ReentrantCircuitTest:shouldHandleConcurrentWaiters</h2>
+<p class="totop"><a href="#summary">back to summary</a></p>
+</body></html>
