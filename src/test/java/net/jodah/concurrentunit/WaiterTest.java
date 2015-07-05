@@ -1,7 +1,8 @@
 package net.jodah.concurrentunit;
 
 import java.util.concurrent.TimeoutException;
-
+import java.util.concurrent.atomic.AtomicInteger;
+import static org.testng.Assert.*;
 import org.testng.annotations.Test;
 
 /**
@@ -137,17 +138,26 @@ public class WaiterTest {
     w.await();
   }
 
-  public void shouldHandleResumeThenAwait() throws Throwable {
+  public void shouldHandleResumesThenAwait() throws Throwable {
     final Waiter w = new Waiter();
+    final AtomicInteger expectedResumes = new AtomicInteger();
 
     new Thread(new Runnable() {
       public void run() {
-        w.resume();
+        try {
+          w.resume();
+          expectedResumes.incrementAndGet();
+          Thread.sleep(400);
+          expectedResumes.incrementAndGet();
+          w.resume();
+        } catch (InterruptedException e) {
+        }
       }
     }).start();
 
-    Thread.sleep(400);
-    w.await();
+    Thread.sleep(200);
+    w.await(0, 2);
+    assertEquals(expectedResumes.get(), 2, "Expected two resumes from separate thread");
   }
 
   @Test(expectedExceptions = AssertionError.class)
@@ -161,7 +171,7 @@ public class WaiterTest {
     }).start();
 
     Thread.sleep(400);
-    w.await();
+    w.await(0, 5);
   }
 
   @Test(expectedExceptions = AssertionError.class)
@@ -181,7 +191,7 @@ public class WaiterTest {
     Thread.sleep(400);
     w.await();
   }
-  
+
   @Test(expectedExceptions = AssertionError.class)
   public void shouldHandleFailResumeAwait() throws Throwable {
     final Waiter w = new Waiter();

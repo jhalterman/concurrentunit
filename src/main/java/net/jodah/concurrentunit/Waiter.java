@@ -148,13 +148,19 @@ public class Waiter {
     if (Thread.currentThread() != mainThread)
       throw new IllegalStateException("Must be called from within the main test thread");
 
-    remainingResumes.set(expectedResumes);
-
     try {
-      if (delay == 0)
-        circuit.await();
-      else if (!circuit.await(delay, timeUnit))
-        throw new TimeoutException(TIMEOUT_MESSAGE);
+      if (failure == null) {
+        synchronized (this) {
+          int remaining = remainingResumes.addAndGet(expectedResumes);
+          if (remaining > 0)
+            circuit.open();
+        }
+
+        if (delay == 0)
+          circuit.await();
+        else if (!circuit.await(delay, timeUnit))
+          throw new TimeoutException(TIMEOUT_MESSAGE);
+      }
     } catch (InterruptedException e) {
     } finally {
       remainingResumes.set(0);
@@ -170,7 +176,7 @@ public class Waiter {
   /**
    * Resumes the waiter when the expected number of {@link #resume()} calls have occurred.
    */
-  public void resume() {
+  public synchronized void resume() {
     if (remainingResumes.decrementAndGet() <= 0)
       circuit.close();
   }

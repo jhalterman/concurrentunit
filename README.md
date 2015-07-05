@@ -11,7 +11,7 @@ ConcurrentUnit was created to help developers test multi-threaded code. It allow
 ## Usage
 
 1. Create a `Waiter`
-2. Use `Waiter.await` to block the main test thread while waiting for other threads to perform assertions.
+2. Use `Waiter.await` to block the main test thread.
 3. Use the `Waiter.assert` calls from any thread to perform assertions. 
 4. Once expected assertions are completed, use `Waiter.resume` call to unblock the main thread.
 
