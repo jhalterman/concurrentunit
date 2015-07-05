@@ -26,6 +26,11 @@ public class Waiter {
     circuit.open();
   }
 
+  /**
+   * Asserts that the {@code expected} values equals the {@code actual} value
+   * 
+   * @throws AssertionError when the assertion fails
+   */
   public void assertEquals(Object expected, Object actual) {
     if (expected == null && actual == null)
       return;
@@ -36,6 +41,8 @@ public class Waiter {
 
   /**
    * Asserts that the {@code condition} is false.
+   * 
+   * @throws AssertionError when the assertion fails
    */
   public void assertFalse(boolean condition) {
     if (condition)
@@ -44,6 +51,8 @@ public class Waiter {
 
   /**
    * Asserts that the {@code object} is not null.
+   * 
+   * @throws AssertionError when the assertion fails
    */
   public void assertNotNull(Object object) {
     if (object == null)
@@ -52,6 +61,8 @@ public class Waiter {
 
   /**
    * Asserts that the {@code object} is null.
+   * 
+   * @throws AssertionError when the assertion fails
    */
   public void assertNull(Object object) {
     if (object != null)
@@ -60,6 +71,8 @@ public class Waiter {
 
   /**
    * Asserts that the {@code condition} is true.
+   * 
+   * @throws AssertionError when the assertion fails
    */
   public void assertTrue(boolean condition) {
     if (!condition)
@@ -135,7 +148,7 @@ public class Waiter {
     if (Thread.currentThread() != mainThread)
       throw new IllegalStateException("Must be called from within the main test thread");
 
-    remainingResumes.compareAndSet(0, expectedResumes);
+    remainingResumes.set(expectedResumes);
 
     try {
       if (delay == 0)
@@ -155,21 +168,19 @@ public class Waiter {
   }
 
   /**
-   * Instructs the waiter to expect {@link #resume()} to be called.
+   * Resumes the waiter when the expected number of {@link #resume()} calls have occurred.
+   * 
+   * @throws IllegalStateException if the waiter is not expecting resume to be called
    */
-  public void expectResume() {
-    remainingResumes.addAndGet(1);
-  }
-
-  /**
-   * Instructs the waiter to expect the {@code resumeNumber} resumes to occur.
-   */
-  public void expectResumes(int resumeNumber) {
-    remainingResumes.addAndGet(resumeNumber);
+  public void resume() {
+    if (remainingResumes.decrementAndGet() <= 0)
+      circuit.close();
   }
 
   /**
    * Fails the current test.
+   * 
+   * @throws AssertionError
    */
   public void fail() {
     fail(new AssertionError());
@@ -177,6 +188,8 @@ public class Waiter {
 
   /**
    * Fails the current test for the given {@code reason}.
+   * 
+   * @throws AssertionError
    */
   public void fail(String reason) {
     fail(new AssertionError(reason));
@@ -185,10 +198,10 @@ public class Waiter {
   /**
    * Fails the current test with the given {@code reason}, sets the number of expected resumes to 0, and throws the
    * {@code reason} in the current thread and the main test thread.
+   * 
+   * @throws AssertionError wrapping the {@code reason}
    */
   public void fail(Throwable reason) {
-    remainingResumes.set(0);
-
     AssertionError ae = null;
     if (reason instanceof AssertionError)
       ae = (AssertionError) reason;
@@ -197,51 +210,9 @@ public class Waiter {
       ae.initCause(reason);
     }
 
-    if (Thread.currentThread() == mainThread)
-      throw ae;
-
     failure = reason;
     circuit.close();
     throw ae;
-  }
-
-  /**
-   * Gets the remaining number of expected resumes that must occur before any waiting/sleeping threads are unblocked.
-   */
-  public int getExpectedResumes() {
-    return remainingResumes.get();
-  }
-
-  /**
-   * Resumes the waiter when the expected number of {@link #resume()} calls have occurred.
-   * 
-   * @throws IllegalStateException if the waiter is not expecting resume to be called
-   */
-  public void resume() {
-    resume(mainThread);
-  }
-
-  /**
-   * Resumes the waiter if {@code thread} is not the mainThread or the expected number of resumes have occurred.
-   * 
-   * <p>
-   * Note: This method is likely not very useful to call directly since a concurrent run of a test case resulting in the
-   * need to resume from a separate thread would yield no correlation between the initiating thread and the thread where
-   * the resume call takes place.
-   * 
-   * @param thread Thread to resume
-   * @throws IllegalStateException if the waiter is not expecting resume to be called
-   */
-  public void resume(Thread thread) {
-    if (thread != mainThread)
-      circuit.close();
-    else {
-      int expectedResumes = remainingResumes.decrementAndGet();
-      if (expectedResumes < 0)
-        throw new IllegalStateException("The waiter is not expecting resume to be called");
-      if (expectedResumes == 0)
-        circuit.close();
-    }
   }
 
   private String format(Object expected, Object actual) {

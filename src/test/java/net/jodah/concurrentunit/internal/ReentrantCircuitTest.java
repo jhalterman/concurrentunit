@@ -82,7 +82,6 @@ public class ReentrantCircuitTest {
     circuit.open();
 
     final Waiter waiter = new Waiter();
-    waiter.expectResumes(3);
     for (int i = 0; i < 3; i++)
       new Thread(new Runnable() {
         @Override
@@ -105,7 +104,6 @@ public class ReentrantCircuitTest {
     circuit.open();
 
     final Waiter waiter = new Waiter();
-    waiter.expectResumes(3);
     for (int i = 0; i < 3; i++)
       new Thread(new Runnable() {
         @Override
@@ -127,7 +125,6 @@ public class ReentrantCircuitTest {
     circuit.open();
 
     final Waiter waiter = new Waiter();
-    waiter.expectResume();
     new Thread(new Runnable() {
       @Override
       public void run() {

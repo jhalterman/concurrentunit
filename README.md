@@ -15,11 +15,7 @@ ConcurrentUnit was created to help developers test multi-threaded code. It allow
 3. Use the `Waiter.assert` calls from any thread to perform assertions. 
 4. Once expected assertions are completed, use `Waiter.resume` call to unblock the main thread.
 
-Optionally:
-
-* Use `Waiter.expectResumes` to indicate the number of `resume` calls the waiter should expect. This is useful when `resume` may be called by some thread prior to `await`.
-
-When your test runs, assertion failures will result in the main thread being interrupted and the failure thrown. If an `await` call times out before all expected `resume` calls occur, the test is failed with a `TimeoutException`.
+When your test runs, assertion failures will result in the main thread being interrupted and the failure thrown. If an `await` call times out before all expected `resume` calls occur, the test will fail with a `TimeoutException`.
 
 ## Examples
 
@@ -51,7 +47,6 @@ Multiple threads can be used along with any number of expected `resume` calls:
 public void shouldWaitForResumes() throws Throwable {
   final Waiter waiter = new Waiter();
   int expectedResumes = 5;
-  waiter.expectResumes(expectedResumes);
 
   for (int i = 0; i < expectedResumes; i++) {
     new Thread(new Runnable() {
@@ -62,7 +57,7 @@ public void shouldWaitForResumes() throws Throwable {
     }).start();
   }
   
-  waiter.await(1000);
+  waiter.await(1000, expectedResumes);
 }
 ```
 

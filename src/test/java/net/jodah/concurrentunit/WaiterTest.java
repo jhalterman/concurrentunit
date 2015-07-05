@@ -12,10 +12,8 @@ public class WaiterTest {
   @Test
   public void shouldSupportMultipleThreads() throws Throwable {
     final Waiter waiter = new Waiter();
-    int expectedResumes = 5;
-    waiter.expectResumes(expectedResumes);
 
-    for (int i = 0; i < expectedResumes; i++)
+    for (int i = 0; i < 5; i++)
       new Thread(new Runnable() {
         public void run() {
           waiter.assertTrue(true);
@@ -46,16 +44,12 @@ public class WaiterTest {
    * Should throw an exception.
    */
   @Test(expectedExceptions = IllegalArgumentException.class)
-  public void waitShouldSupportExceptions() throws Throwable {
+  public void waitShouldSupportFail() throws Throwable {
     final Waiter w = new Waiter();
 
     new Thread(new Runnable() {
       public void run() {
-        try {
-          throw new IllegalArgumentException();
-        } catch (Exception e) {
-          w.fail(e);
-        }
+        w.fail(new IllegalArgumentException());
       }
     }).start();
 
@@ -76,7 +70,7 @@ public class WaiterTest {
       }
     }).start();
 
-    w.await(0);
+    w.await();
   }
 
   /**
@@ -123,13 +117,6 @@ public class WaiterTest {
     w.await(0, 5);
   }
 
-  @Test(expectedExceptions = IllegalStateException.class)
-  public void shouldThrowWhenResumingWithoutWait() throws Throwable {
-    Waiter w = new Waiter();
-    w.resume();
-    w.await();
-  }
-
   @Test(expectedExceptions = AssertionError.class)
   public void shouldFailNullAssertionWithReason() throws Throwable {
     Waiter w = new Waiter();
@@ -150,13 +137,81 @@ public class WaiterTest {
     w.await();
   }
 
+  public void shouldHandleResumeThenAwait() throws Throwable {
+    final Waiter w = new Waiter();
+
+    new Thread(new Runnable() {
+      public void run() {
+        w.resume();
+      }
+    }).start();
+
+    Thread.sleep(400);
+    w.await();
+  }
+
+  @Test(expectedExceptions = AssertionError.class)
+  public void shouldHandleFailThenAwait() throws Throwable {
+    final Waiter w = new Waiter();
+
+    new Thread(new Runnable() {
+      public void run() {
+        w.fail();
+      }
+    }).start();
+
+    Thread.sleep(400);
+    w.await();
+  }
+
+  @Test(expectedExceptions = AssertionError.class)
+  public void shouldHandleResumeFailAwait() throws Throwable {
+    final Waiter w = new Waiter();
+
+    new Thread(new Runnable() {
+      public void run() {
+        try {
+          w.resume();
+          w.fail();
+        } catch (Throwable ignore) {
+        }
+      }
+    }).start();
+
+    Thread.sleep(400);
+    w.await();
+  }
+  
+  @Test(expectedExceptions = AssertionError.class)
+  public void shouldHandleFailResumeAwait() throws Throwable {
+    final Waiter w = new Waiter();
+
+    new Thread(new Runnable() {
+      public void run() {
+        try {
+          w.fail();
+        } catch (Throwable ignore) {
+        }
+        w.resume();
+      }
+    }).start();
+
+    Thread.sleep(400);
+    w.await();
+  }
+
+  public void shouldSupportSuccessiveResumeAwaits() throws Throwable {
+    final Waiter w = new Waiter();
+    w.resume();
+    w.await();
+    w.resume();
+    w.await();
+  }
+
   public void shouldSupportSuccessiveResumes() throws Throwable {
     final Waiter w = new Waiter();
-    w.expectResume();
     w.resume();
-    Thread.currentThread().interrupt();
-    w.await();
-    w.expectResume();
+    w.resume();
     w.resume();
     w.await();
   }
