@@ -169,8 +169,6 @@ public class Waiter {
 
   /**
    * Resumes the waiter when the expected number of {@link #resume()} calls have occurred.
-   * 
-   * @throws IllegalStateException if the waiter is not expecting resume to be called
    */
   public void resume() {
     if (remainingResumes.decrementAndGet() <= 0)
