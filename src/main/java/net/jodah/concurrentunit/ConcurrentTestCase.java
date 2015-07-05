@@ -1,5 +1,7 @@
 package net.jodah.concurrentunit;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Convenience support class, wrapping a {@link Waiter}.
  * 
@@ -14,7 +16,7 @@ public abstract class ConcurrentTestCase {
   public void expectResume() {
     waiter.expectResume();
   }
-  
+
   /**
    * @see Waiter#expectResumes(int)
    */
@@ -88,15 +90,29 @@ public abstract class ConcurrentTestCase {
   /**
    * @see Waiter#await(long)
    */
-  protected void await(long waitDuration) throws Throwable {
-    waiter.await(waitDuration);
+  protected void await(long delay) throws Throwable {
+    waiter.await(delay);
   }
 
   /**
-   * @see Waiter#wait(long, int)
+   * @see Waiter#await(long, int)
    */
-  protected void await(long waitDuration, int resumeThreshold) throws Throwable {
-    waiter.await(waitDuration, resumeThreshold);
+  protected void await(long delay, int expectedResumes) throws Throwable {
+    waiter.await(delay, expectedResumes);
+  }
+  
+  /**
+   * @see Waiter#await(long, TimeUnit)
+   */
+  protected void await(long delay, TimeUnit timeUnit) throws Throwable {
+    waiter.await(delay);
+  }
+
+  /**
+   * @see Waiter#wait(long, TimeUnit, int)
+   */
+  protected void await(long delay, TimeUnit timeUnit, int expectedResumes) throws Throwable {
+    waiter.await(delay, timeUnit, expectedResumes);
   }
 
   /**
@@ -111,19 +127,5 @@ public abstract class ConcurrentTestCase {
    */
   protected void resume(Thread thread) {
     waiter.resume(thread);
-  }
-
-  /**
-   * @see Waiter#sleep(long)
-   */
-  protected void sleep(long sleepDuration) throws Throwable {
-    waiter.sleep(sleepDuration);
-  }
-
-  /**
-   * @see Waiter#sleep(long, int)
-   */
-  protected void sleep(long sleepDuration, int resumeThreshold) throws Throwable {
-    waiter.sleep(sleepDuration, resumeThreshold);
   }
 }

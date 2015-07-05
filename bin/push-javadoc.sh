@@ -1,9 +1,8 @@
 #!/bin/sh
 # run from top level dir
-rm -rf docs
-git clone git@github.com:jhalterman/concurrentunit.git docs -b gh-pages
+git clone git@github.com:jhalterman/concurrentunit.git target/docs -b gh-pages
 mvn -Pjavadoc javadoc:javadoc
-cd docs
+cd target/docs
 git add -A
 git commit -m "Updated JavaDocs"
 git push origin gh-pages

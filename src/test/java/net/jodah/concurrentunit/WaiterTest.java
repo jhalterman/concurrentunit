@@ -91,54 +91,6 @@ public class WaiterTest {
   }
 
   /**
-   * Should timeout.
-   * 
-   * @throws Throwable
-   */
-  @Test(expectedExceptions = TimeoutException.class)
-  public void sleepShouldSupportTimeouts() throws Throwable {
-    final Waiter w = new Waiter();
-    w.sleep(10);
-  }
-
-  /**
-   * Should support resume.
-   * 
-   * @throws Throwable
-   */
-  public void sleepShouldSupportResume() throws Throwable {
-    final Waiter w = new Waiter();
-
-    new Thread(new Runnable() {
-      public void run() {
-        waitForMainThread();
-        w.resume();
-      }
-    }).start();
-
-    w.sleep(5000);
-  }
-
-  /**
-   * Should support assertion errors.
-   * 
-   * @throws Throwable
-   */
-  @Test(expectedExceptions = AssertionError.class)
-  public void sleepShouldSupportAssertionErrors() throws Throwable {
-    final Waiter w = new Waiter();
-
-    new Thread(new Runnable() {
-      public void run() {
-        waitForMainThread();
-        w.assertTrue(false);
-      }
-    }).start();
-
-    w.sleep(500);
-  }
-
-  /**
    * Ensures that waiting for multiple resumes works as expected.
    * 
    * @throws Throwable
@@ -197,17 +149,18 @@ public class WaiterTest {
 
     w.await();
   }
-  
-  public void shouldSupportSuccessiveResumes()throws Throwable {
+
+  public void shouldSupportSuccessiveResumes() throws Throwable {
     final Waiter w = new Waiter();
     w.expectResume();
     w.resume();
+    Thread.currentThread().interrupt();
     w.await();
     w.expectResume();
     w.resume();
     w.await();
   }
-  
+
   /**
    * Waits momentarily to allow the main thread to start blocking.
    */

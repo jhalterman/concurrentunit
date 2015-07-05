@@ -1,3 +1,9 @@
+# 0.3.5
+
+### Improvements
+
+* Replaced internal usage of thread interrrupts with a circuit
+
 # 0.3.4
 
 ### Bug Fixes
