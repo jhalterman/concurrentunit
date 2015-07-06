@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/jhalterman/concurrentunit.svg)](https://travis-ci.org/jhalterman/concurrentunit)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jodah/concurrentunit/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jodah/concurrentunit) 
 
-A simple, zero-dependency toolkit for testing multi-threaded code.
+A simple, zero-dependency toolkit for testing multi-threaded code. Supports Java 6+.
 
 ## Introduction
 
@@ -26,16 +26,13 @@ Perform an assertion from a worker thread while blocking the main thread until `
 public void shouldWaitForResume() throws Throwable {
   final Waiter waiter = new Waiter();
 
-  // Start worker thread that performs an assertion after some delay, then resumes the waiter
-  new Thread(new Runnable() {
-    public void run() {
-      doSomeWork();
-      waiter.assertTrue(true);
-      waiter.resume();
-    }
+  new Thread(() -> {
+    doSomeWork();
+    waiter.assertTrue(true);
+    waiter.resume();
   }).start();
   
-  // Waits for resume to be called
+  // Wait for resume() to be called
   waiter.await(1000);
 }
 ```
@@ -49,11 +46,9 @@ public void shouldWaitForResumes() throws Throwable {
   int expectedResumes = 5;
 
   for (int i = 0; i < expectedResumes; i++) {
-    new Thread(new Runnable() {
-      public void run() {
-        waiter.assertTrue(true);
-        waiter.resume();
-      }
+    new Thread(() -> {
+      waiter.assertTrue(true);
+      waiter.resume();
     }).start();
   }
   
@@ -68,11 +63,9 @@ Failed assertions from a worker thread are thrown by the main test thread as exp
 public void shouldFail() throws Throwable {
   final Waiter waiter = new Waiter();
 
-  new Thread(new Runnable() {
-    public void run() {
-      delayFor(100);
-      waiter.assertTrue(false);
-    }
+  new Thread(() -> {
+    delayFor(100);
+    waiter.assertTrue(false);
   }).start();
   
   waiter.await();
@@ -94,18 +87,16 @@ As a more concise alternative to using the `Waiter` class, you can extend the `C
 
 ```java
 class SomeTest extends ConcurrentTestCase {
-	@Test
-	public void shouldSucceed() throws Throwable {
-	  new Thread(new Runnable() {
-	    public void run() {
-	      delayFor(100);
-	      threadAssertTrue(true);
-	      resume();
-	    }
-	  }).start();
+  @Test
+  public void shouldSucceed() throws Throwable {
+	new Thread(() -> {
+      doSomeWork();
+	  threadAssertTrue(true);
+	  resume();
+	}).start();
 	  
-	  await(1000);
-	}
+    await(1000);
+  }
 }
 ```
 
