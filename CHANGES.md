@@ -1,8 +1,10 @@
-# 0.3.5
+# 0.4.0
 
 ### Improvements
 
 * Replaced internal usage of thread interrrupts with a circuit
+* Removed expectResume APIs
+* Added support for TimeUnits
 
 # 0.3.4
 
