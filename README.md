@@ -2,11 +2,11 @@
 [![Build Status](https://travis-ci.org/jhalterman/concurrentunit.svg)](https://travis-ci.org/jhalterman/concurrentunit)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jodah/concurrentunit/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jodah/concurrentunit) 
 
-A simple, zero-dependency toolkit for testing multi-threaded code. Supports Java 6+.
+A simple, zero-dependency toolkit for testing multi-threaded code. Supports Java 1.6+.
 
 ## Introduction
 
-ConcurrentUnit was created to help developers test multi-threaded code. It allows you to perform assertions and wait for operations across multiple threads, with failures being properly reported back to the main test thread. If an assertion fails, your test fails, regardless of which thread the assertion came from.
+ConcurrentUnit was created to help developers test multi-threaded or asynchronous code. It allows you to perform assertions and wait for operations in any thread, with failures being properly reported back to the main test thread. If an assertion fails, your test fails, regardless of which thread the assertion came from.
 
 ## Usage
 
@@ -19,44 +19,48 @@ When your test runs, assertion failures will result in the main thread being int
 
 ## Examples
 
-Perform an assertion from a worker thread while blocking the main thread until `resume` is called:
+Consider a test for a message bus that delivers messages asynchronously:
 
 ```java
 @Test
-public void shouldWaitForResume() throws Throwable {
+public void shouldDeliverMessage() throws Throwable {
   final Waiter waiter = new Waiter();
 
-  new Thread(() -> {
-    doSomeWork();
-    waiter.assertTrue(true);
+  messageBus.registerHandler(message -> {
+    // Called on separate thread
+    waiter.assertEquals(message, "foo");
     waiter.resume();
-  }).start();
+  };
+  
+  messageBus.send("foo");
   
   // Wait for resume() to be called
   waiter.await(1000);
 }
 ```
 
-Multiple threads can be used along with any number of expected `resume` calls:
+We can also handle wait for multiple `resume` calls:
 
 ```java
 @Test
-public void shouldWaitForResumes() throws Throwable {
+public void shouldDeliverMessages() throws Throwable {
   final Waiter waiter = new Waiter();
-  int expectedResumes = 5;
 
-  for (int i = 0; i < expectedResumes; i++) {
-    new Thread(() -> {
-      waiter.assertTrue(true);
-      waiter.resume();
-    }).start();
-  }
+  messageBus.registerHandler(message -> {
+    waiter.assertEquals(message, "foo");
+    waiter.resume();
+  };
   
-  waiter.await(1000, expectedResumes);
+  messageBus.send("foo");
+  messageBus.send("foo");
+  messageBus.send("foo");
+  
+  // Wait for resume() to be called 3 times
+  waiter.await(1000, 3);
 }
 ```
 
-Failed assertions from a worker thread are thrown by the main test thread as expected:
+If an assertion fails in any thread, the test will fail as expected:
 
 ```java
 @Test(expected = AssertionError.class)
@@ -64,7 +68,6 @@ public void shouldFail() throws Throwable {
   final Waiter waiter = new Waiter();
 
   new Thread(() -> {
-    delayFor(100);
     waiter.assertTrue(false);
   }).start();
   
@@ -72,7 +75,7 @@ public void shouldFail() throws Throwable {
 }
 ```
 
-TimeoutException is thrown if `resume` is not called before the await time is exceeded:
+TimeoutException is thrown if `resume` is not called before the `await` time is exceeded:
 
 ```java
 @Test(expected = TimeoutException.class)
