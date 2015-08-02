@@ -26,14 +26,13 @@ public class WaiterTest {
   }
 
   /**
-   * Should throw an exception.
+   * Should support resume.
    */
   public void waitShouldSupportResume() throws Throwable {
     final Waiter w = new Waiter();
 
     new Thread(new Runnable() {
       public void run() {
-        waitForMainThread();
         w.resume();
       }
     }).start();
@@ -66,7 +65,6 @@ public class WaiterTest {
 
     new Thread(new Runnable() {
       public void run() {
-        waitForMainThread();
         w.assertTrue(false);
       }
     }).start();
@@ -76,8 +74,6 @@ public class WaiterTest {
 
   /**
    * Should timeout.
-   * 
-   * @throws Throwable
    */
   @Test(expectedExceptions = TimeoutException.class)
   public void waitShouldSupportTimeouts() throws Throwable {
@@ -87,15 +83,12 @@ public class WaiterTest {
 
   /**
    * Ensures that waiting for multiple resumes works as expected.
-   * 
-   * @throws Throwable
    */
   public void shouldSupportMultipleResumes() throws Throwable {
     final Waiter w = new Waiter();
 
     new Thread(new Runnable() {
       public void run() {
-        waitForMainThread();
         for (int i = 0; i < 5; i++)
           w.resume();
       }
@@ -109,7 +102,6 @@ public class WaiterTest {
 
     new Thread(new Runnable() {
       public void run() {
-        waitForMainThread();
         for (int i = 0; i < 5; i++)
           w.resume();
       }
@@ -130,7 +122,6 @@ public class WaiterTest {
 
     new Thread(new Runnable() {
       public void run() {
-        waitForMainThread();
         w.assertNull("test");
       }
     }).start();
@@ -224,15 +215,5 @@ public class WaiterTest {
     w.resume();
     w.resume();
     w.await();
-  }
-
-  /**
-   * Waits momentarily to allow the main thread to start blocking.
-   */
-  private void waitForMainThread() {
-    try {
-      Thread.sleep(250);
-    } catch (InterruptedException e) {
-    }
   }
 }
