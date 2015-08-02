@@ -1,6 +1,7 @@
 package net.jodah.concurrentunit;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Convenience support class, wrapping a {@link Waiter}.
@@ -69,35 +70,35 @@ public abstract class ConcurrentTestCase {
   /**
    * @see Waiter#await()
    */
-  protected void await() throws Throwable {
+  protected void await() throws TimeoutException {
     waiter.await();
   }
 
   /**
    * @see Waiter#await(long)
    */
-  protected void await(long delay) throws Throwable {
+  protected void await(long delay) throws TimeoutException {
     waiter.await(delay);
   }
 
   /**
    * @see Waiter#await(long, int)
    */
-  protected void await(long delay, int expectedResumes) throws Throwable {
+  protected void await(long delay, int expectedResumes) throws TimeoutException {
     waiter.await(delay, expectedResumes);
   }
-  
+
   /**
    * @see Waiter#await(long, TimeUnit)
    */
-  protected void await(long delay, TimeUnit timeUnit) throws Throwable {
+  protected void await(long delay, TimeUnit timeUnit) throws TimeoutException {
     waiter.await(delay);
   }
 
   /**
    * @see Waiter#wait(long, TimeUnit, int)
    */
-  protected void await(long delay, TimeUnit timeUnit, int expectedResumes) throws Throwable {
+  protected void await(long delay, TimeUnit timeUnit, int expectedResumes) throws TimeoutException {
     waiter.await(delay, timeUnit, expectedResumes);
   }
 

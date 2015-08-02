@@ -15,7 +15,7 @@ public class Waiter {
   private static final String TIMEOUT_MESSAGE = "Test timed out while waiting for an expected result";
   private AtomicInteger remainingResumes = new AtomicInteger(0);
   private final ReentrantCircuit circuit = new ReentrantCircuit();
-  private volatile Throwable failure;
+  private volatile AssertionError failure;
 
   /**
    * Creates a new Waiter.
@@ -80,10 +80,10 @@ public class Waiter {
   /**
    * Waits until {@link #resume()} is called the expected number of times, or the test is failed.
    * 
-   * @throws TimeoutException if the operation times out while waiting for a result
-   * @throws Throwable if any assertion fails
+   * @throws TimeoutException if the operation times out while waiting
+   * @throws AssertionError if any assertion fails while waiting
    */
-  public void await() throws Throwable {
+  public void await() throws TimeoutException {
     await(0, TimeUnit.MILLISECONDS, 1);
   }
 
@@ -92,10 +92,10 @@ public class Waiter {
    * failed.
    * 
    * @param delay Delay to wait in milliseconds
-   * @throws TimeoutException if the operation times out while waiting for a result
-   * @throws Throwable if any assertion fails
+   * @throws TimeoutException if the operation times out while waiting
+   * @throws AssertionError if any assertion fails while waiting
    */
-  public void await(long delay) throws Throwable {
+  public void await(long delay) throws TimeoutException {
     await(delay, TimeUnit.MILLISECONDS, 1);
   }
 
@@ -105,10 +105,10 @@ public class Waiter {
    * 
    * @param delay Delay to wait for
    * @param timeUnit TimeUnit to delay for
-   * @throws TimeoutException if the operation times out while waiting for a result
-   * @throws Throwable if any assertion fails
+   * @throws TimeoutException if the operation times out while waiting
+   * @throws AssertionError if any assertion fails while waiting
    */
-  public void await(long delay, TimeUnit timeUnit) throws Throwable {
+  public void await(long delay, TimeUnit timeUnit) throws TimeoutException {
     await(delay, timeUnit, 1);
   }
 
@@ -119,10 +119,10 @@ public class Waiter {
    * @param delay Delay to wait for in milliseconds
    * @param expectedResumes Number of times {@link #resume()} is expected to be called before the awaiting thread is
    *          resumed
-   * @throws TimeoutException if the operation times out while waiting for a result
-   * @throws Throwable if any assertion fails
+   * @throws TimeoutException if the operation times out while waiting
+   * @throws AssertionError if any assertion fails while waiting
    */
-  public void await(long delay, int expectedResumes) throws Throwable {
+  public void await(long delay, int expectedResumes) throws TimeoutException {
     await(delay, TimeUnit.MILLISECONDS, expectedResumes);
   }
 
@@ -134,10 +134,10 @@ public class Waiter {
    * @param timeUnit TimeUnit to delay for
    * @param expectedResumes Number of times {@link #resume()} is expected to be called before the awaiting thread is
    *          resumed
-   * @throws TimeoutException if the operation times out while waiting for a result
-   * @throws Throwable if any assertion fails
+   * @throws TimeoutException if the operation times out while waiting
+   * @throws AssertionError if any assertion fails while waiting
    */
-  public void await(long delay, TimeUnit timeUnit, int expectedResumes) throws Throwable {
+  public void await(long delay, TimeUnit timeUnit, int expectedResumes) throws TimeoutException {
     try {
       if (failure == null) {
         synchronized (this) {
@@ -156,7 +156,7 @@ public class Waiter {
       remainingResumes.set(0);
       circuit.open();
       if (failure != null) {
-        Throwable f = failure;
+        AssertionError f = failure;
         failure = null;
         throw f;
       }
@@ -204,7 +204,7 @@ public class Waiter {
       ae.initCause(reason);
     }
 
-    failure = reason;
+    failure = ae;
     circuit.close();
     throw ae;
   }

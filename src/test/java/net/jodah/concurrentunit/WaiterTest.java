@@ -1,8 +1,12 @@
 package net.jodah.concurrentunit;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
+
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
-import static org.testng.Assert.*;
+
 import org.testng.annotations.Test;
 
 /**
@@ -41,9 +45,8 @@ public class WaiterTest {
   }
 
   /**
-   * Should throw an exception.
+   * Should throw an assertion error caused by the failure.
    */
-  @Test(expectedExceptions = IllegalArgumentException.class)
   public void waitShouldSupportFail() throws Throwable {
     final Waiter w = new Waiter();
 
@@ -53,7 +56,12 @@ public class WaiterTest {
       }
     }).start();
 
-    w.await();
+    try {
+      w.await();
+      fail();
+    } catch (AssertionError e) {
+      assertTrue(e.getCause() instanceof IllegalArgumentException);
+    }
   }
 
   /**
