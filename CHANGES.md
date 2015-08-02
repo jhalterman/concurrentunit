@@ -1,3 +1,9 @@
+# 0.4.1
+
+### Bug Fixes
+
+* Waiter no longer checks that `await` calls are made from the main test thread, since JUnit may construct and run the test from different threads
+
 # 0.4.0
 
 ### Improvements
