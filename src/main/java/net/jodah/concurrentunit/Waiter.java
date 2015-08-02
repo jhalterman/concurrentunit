@@ -13,7 +13,6 @@ import net.jodah.concurrentunit.internal.ReentrantCircuit;
  */
 public class Waiter {
   private static final String TIMEOUT_MESSAGE = "Test timed out while waiting for an expected result";
-  private final Thread mainThread;
   private AtomicInteger remainingResumes = new AtomicInteger(0);
   private final ReentrantCircuit circuit = new ReentrantCircuit();
   private volatile Throwable failure;
@@ -22,7 +21,6 @@ public class Waiter {
    * Creates a new Waiter.
    */
   public Waiter() {
-    mainThread = Thread.currentThread();
     circuit.open();
   }
 
@@ -82,7 +80,6 @@ public class Waiter {
   /**
    * Waits until {@link #resume()} is called the expected number of times, or the test is failed.
    * 
-   * @throws IllegalStateException if called from outside the main test thread
    * @throws TimeoutException if the operation times out while waiting for a result
    * @throws Throwable if any assertion fails
    */
@@ -95,7 +92,6 @@ public class Waiter {
    * failed.
    * 
    * @param delay Delay to wait in milliseconds
-   * @throws IllegalStateException if called from outside the main test thread
    * @throws TimeoutException if the operation times out while waiting for a result
    * @throws Throwable if any assertion fails
    */
@@ -109,7 +105,6 @@ public class Waiter {
    * 
    * @param delay Delay to wait for
    * @param timeUnit TimeUnit to delay for
-   * @throws IllegalStateException if called from outside the main test thread
    * @throws TimeoutException if the operation times out while waiting for a result
    * @throws Throwable if any assertion fails
    */
@@ -124,7 +119,6 @@ public class Waiter {
    * @param delay Delay to wait for in milliseconds
    * @param expectedResumes Number of times {@link #resume()} is expected to be called before the awaiting thread is
    *          resumed
-   * @throws IllegalStateException if called from outside the main test thread
    * @throws TimeoutException if the operation times out while waiting for a result
    * @throws Throwable if any assertion fails
    */
@@ -140,14 +134,10 @@ public class Waiter {
    * @param timeUnit TimeUnit to delay for
    * @param expectedResumes Number of times {@link #resume()} is expected to be called before the awaiting thread is
    *          resumed
-   * @throws IllegalStateException if called from outside the main test thread
    * @throws TimeoutException if the operation times out while waiting for a result
    * @throws Throwable if any assertion fails
    */
   public void await(long delay, TimeUnit timeUnit, int expectedResumes) throws Throwable {
-    if (Thread.currentThread() != mainThread)
-      throw new IllegalStateException("Must be called from within the main test thread");
-
     try {
       if (failure == null) {
         synchronized (this) {
