@@ -9,7 +9,7 @@
 
   <groupId>net.jodah</groupId>
   <artifactId>concurrentunit</artifactId>
-  <version>0.4.1</version>
+  <version>0.4.2-SNAPSHOT</version>
   <name>ConcurrentUnit</name>
   <url>https://github.com/jhalterman/concurrentunit</url>
   <inceptionYear>2010</inceptionYear>
