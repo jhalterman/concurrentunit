@@ -107,10 +107,12 @@ class SomeTest extends ConcurrentTestCase {
 
 ConcurrentUnit supports the standard assertions along with [Hamcrest Matcher](http://hamcrest.org/JavaHamcrest/javadoc/) assertions:
 
-```
+```java
 waiter.assertEquals(expected, result);
 waiter.assertThat(result, is(equalTo(expected)));
 ```
+
+Since Hamcrest is an optional dependency, users need to explicitly add it to their classpath (via Maven/Gradle/etc).
 
 ### Other Examples
 
