@@ -3,6 +3,8 @@ package net.jodah.concurrentunit;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.hamcrest.Matcher;
+
 /**
  * Convenience support class, wrapping a {@link Waiter}.
  * 
@@ -44,6 +46,13 @@ public abstract class ConcurrentTestCase {
    */
   public void threadAssertTrue(boolean b) {
     waiter.assertTrue(b);
+  }
+
+  /**
+   * @see Waiter#assertThat(Object, Matcher)
+   */
+  public <T> void threadAssertThat(T actual, Matcher<? super T> matcher) {
+    waiter.assertThat(actual, matcher);
   }
 
   /**
