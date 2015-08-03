@@ -6,6 +6,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import net.jodah.concurrentunit.internal.ReentrantCircuit;
 
+import org.hamcrest.Matcher;
+import org.hamcrest.MatcherAssert;
+
 /**
  * Waits on a test, carrying out assertions, until being resumed.
  * 
@@ -75,6 +78,19 @@ public class Waiter {
   public void assertTrue(boolean condition) {
     if (!condition)
       fail("expected true");
+  }
+
+  /**
+   * Asserts that {@code actual} satisfies the condition specified by {@code matcher}.
+   * 
+   * @throws AssertionError when the assertion fails
+   */
+  public <T> void assertThat(T actual, Matcher<? super T> matcher) {
+    try {
+      MatcherAssert.assertThat(actual, matcher);
+    } catch (AssertionError e) {
+      fail(e);
+    }
   }
 
   /**
