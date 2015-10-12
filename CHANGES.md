@@ -1,3 +1,9 @@
+# 0.4.2
+
+### New Features
+
+* Added `Waiter.rethrow` method
+
 # 0.4.1
 
 ### Bug Fixes
