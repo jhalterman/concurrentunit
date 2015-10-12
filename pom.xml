@@ -52,6 +52,10 @@
           <author>false</author>
           <protected>true</protected>
           <excludePackageNames>*.internal</excludePackageNames>
+          <additionalparam>
+            -Xdoclint:none
+            -notimestamp
+          </additionalparam>
         </configuration>
       </plugin>
     </plugins>
@@ -71,25 +75,4 @@
       <optional>true</optional>
     </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>javadoc</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-              <author>false</author>
-              <protected>true</protected>
-              <excludePackageNames>*.internal</excludePackageNames>
-              <reportOutputDirectory>target/docs</reportOutputDirectory>
-              <destDir>javadoc</destDir>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

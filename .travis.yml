@@ -1,5 +1,5 @@
 language: java
-install: mvn install -DskipTests=true -Dgpg.skip=true
+sudo: false
 
 jdk:
   - oraclejdk7
@@ -8,9 +8,9 @@ jdk:
 notifications:
   email: false
 
-# whitelist
 branches:
   only:
     - master
 
-sudo: false
+after_success:
+  - bin/ci-push-javadoc.sh
