@@ -4,6 +4,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
+import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -206,6 +207,19 @@ public class WaiterTest {
     }).start();
 
     Thread.sleep(400);
+    w.await();
+  }
+  
+  @Test(expectedExceptions = IOException.class)
+  public void shouldRethrow() throws Throwable {
+    final Waiter w = new Waiter();
+
+    new Thread(new Runnable() {
+      public void run() {
+        w.rethrow(new IOException());
+      }
+    }).start();
+
     w.await();
   }
 

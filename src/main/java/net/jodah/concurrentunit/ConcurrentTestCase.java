@@ -77,6 +77,14 @@ public abstract class ConcurrentTestCase {
   }
 
   /**
+   * @see Waiter#rethrow(Throwable)
+   */
+  public void rethrow(Throwable reason) {
+    waiter.rethrow(reason);
+  }
+
+  
+  /**
    * @see Waiter#await()
    */
   protected void await() throws TimeoutException {

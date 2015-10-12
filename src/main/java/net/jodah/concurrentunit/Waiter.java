@@ -18,7 +18,7 @@ public class Waiter {
   private static final String TIMEOUT_MESSAGE = "Test timed out while waiting for an expected result";
   private AtomicInteger remainingResumes = new AtomicInteger(0);
   private final ReentrantCircuit circuit = new ReentrantCircuit();
-  private volatile AssertionError failure;
+  private volatile Throwable failure;
 
   /**
    * Creates a new Waiter.
@@ -172,9 +172,9 @@ public class Waiter {
       remainingResumes.set(0);
       circuit.open();
       if (failure != null) {
-        AssertionError f = failure;
+        Throwable f = failure;
         failure = null;
-        throw f;
+        sneakyThrow(f);
       }
     }
   }
@@ -207,7 +207,7 @@ public class Waiter {
 
   /**
    * Fails the current test with the given {@code reason}, sets the number of expected resumes to 0, and throws the
-   * {@code reason} in the current thread and the main test thread.
+   * {@code reason} as an {@code AssertionError} in the main test thread and in the current thread.
    * 
    * @throws AssertionError wrapping the {@code reason}
    */
@@ -225,6 +225,27 @@ public class Waiter {
     throw ae;
   }
 
+  /**
+   * Rethrows the {@code failure} in the main test thread and in the current thread. Differs from
+   * {@link #fail(Throwable)} which wraps a failure in an AssertionError before throwing.
+   * 
+   * @throws Throwable the {@code failure}
+   */
+  public void rethrow(Throwable failure) {
+    this.failure = failure;
+    circuit.close();
+    sneakyThrow(failure);
+  }
+
+  private static void sneakyThrow(Throwable t) {
+    Waiter.<Error>sneakyThrow2(t);
+  }
+  
+  @SuppressWarnings("unchecked")
+  private static <T extends Throwable> void sneakyThrow2(Throwable t) throws T {
+    throw (T) t;
+  }
+  
   private String format(Object expected, Object actual) {
     return "expected:<" + expected + "> but was:<" + actual + ">";
   }
