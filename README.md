@@ -13,7 +13,7 @@ ConcurrentUnit was created to help developers test multi-threaded or asynchronou
 1. Create a `Waiter`
 2. Use `Waiter.await` to block the main test thread.
 3. Use the `Waiter.assert` calls from any thread to perform assertions. 
-4. Once expected assertions are completed, use `Waiter.resume` call to unblock the main thread.
+4. Once expected assertions are completed, use `Waiter.resume` call to unblock the `await`ing thread.
 
 When your test runs, assertion failures will result in the main thread being interrupted and the failure thrown. If an `await` call times out before all expected `resume` calls occur, the test will fail with a `TimeoutException`.
 
@@ -84,7 +84,7 @@ public void shouldTimeout() throws Throwable {
 }
 ```
 
-### Alternatively
+#### Alternatively
 
 As a more concise alternative to using the `Waiter` class, you can extend the `ConcurrentTestCase`:
 
@@ -103,7 +103,7 @@ class SomeTest extends ConcurrentTestCase {
 }
 ```
 
-### Assertions
+#### Assertions
 
 ConcurrentUnit supports the standard assertions along with [Hamcrest Matcher](http://hamcrest.org/JavaHamcrest/javadoc/) assertions:
 
@@ -114,14 +114,21 @@ waiter.assertThat(result, is(equalTo(expected)));
 
 Since Hamcrest is an optional dependency, users need to explicitly add it to their classpath (via Maven/Gradle/etc).
 
-### Other Examples
+#### Other Examples
 
 More example usages can be found in the [WaiterTest](https://github.com/jhalterman/concurrentunit/blob/master/src/test/java/net/jodah/concurrentunit/WaiterTest.java) or in the following projects:
 
+* [Atomix](https://github.com/atomix/atomix/tree/master/core/src/test/java/io/atomix)
 * [Lyra](https://github.com/jhalterman/lyra/tree/master/src/test/java/net/jodah/lyra/internal/util/concurrent)
 * [Recurrent](https://github.com/jhalterman/recurrent/blob/master/src/test/java/net/jodah/recurrent/RecurrentTest.java)
 * [ExpiringMap](https://github.com/jhalterman/expiringmap/blob/master/src/test/java/net/jodah/expiringmap/ExpiringMapTest.java)
-* [Copycat](https://github.com/kuujo/copycat)
+* [Copycat](https://github.com/atomix/copycat/tree/master/server/src/test/java/io/atomix/copycat/server/state)
+
+## Additional Notes
+
+#### On `await` / `resume` Timing
+
+Since it is not always possible to ensure that `resume` is called after `await` in multi-threaded tests, ConcurrentUnit allows them to be called in either order. If `resume` is called before `await`, the resume calls are recorded and `await` will return immediately if the expected number of resumes have already occurred. This ability comes with a caveat though: it is not possible to detect when additional unexpected `resume` calls are made since ConcurrentUnit allows an `await` call to follow.
 
 ## Docs
 
@@ -129,4 +136,4 @@ JavaDocs are available [here](https://jhalterman.github.com/concurrentunit/javad
 
 ## License
 
-Copyright 2010-2015 Jonathan Halterman - Released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).
+Copyright 2011-2016 Jonathan Halterman - Released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).
