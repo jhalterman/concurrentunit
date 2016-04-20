@@ -1,6 +1,8 @@
 # ConcurrentUnit
 [![Build Status](https://travis-ci.org/jhalterman/concurrentunit.svg)](https://travis-ci.org/jhalterman/concurrentunit)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jodah/concurrentunit/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jodah/concurrentunit) 
+[![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![JavaDoc](http://javadoc-badge.appspot.com/net.jodah/concurrentunit.svg?label=javadoc)](https://jhalterman.github.com/concurrentunit/javadoc)
 
 A simple, zero-dependency toolkit for testing multi-threaded code. Supports Java 1.6+.
 
