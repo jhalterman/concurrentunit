@@ -62,13 +62,6 @@ public abstract class ConcurrentTestCase {
   }
 
   /**
-   * @see Waiter#assertThat(Object, org.hamcrest.Matcher)
-   */
-  public <T> void threadAssertThat(T actual, org.hamcrest.Matcher<? super T> matcher) {
-    waiter.assertThat(actual, matcher);
-  }
-
-  /**
    * @see Waiter#fail()
    */
   public void threadFail() {
