@@ -106,7 +106,7 @@ public class Waiter {
   }
 
   /**
-   * Waits until {@link #resume()} is called the expected number of times, or the test is failed.
+   * Waits until {@link #resume()} is called, or the test is failed.
    * 
    * @throws TimeoutException if the operation times out while waiting
    * @throws AssertionError if any assertion fails while waiting
@@ -116,8 +116,7 @@ public class Waiter {
   }
 
   /**
-   * Waits until the {@code delay} has elapsed, {@link #resume()} is called the expected number of times, or the test is
-   * failed.
+   * Waits until the {@code delay} has elapsed, {@link #resume()} is called, or the test is failed.
    * 
    * @param delay Delay to wait in milliseconds
    * @throws TimeoutException if the operation times out while waiting
@@ -128,8 +127,7 @@ public class Waiter {
   }
 
   /**
-   * Waits until the {@code delay} has elapsed, {@link #resume()} is called the expected number of times, or the test is
-   * failed.
+   * Waits until the {@code delay} has elapsed, {@link #resume()} is called, or the test is failed.
    * 
    * @param delay Delay to wait for
    * @param timeUnit TimeUnit to delay for
