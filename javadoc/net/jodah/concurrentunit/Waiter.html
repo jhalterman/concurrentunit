@@ -189,14 +189,13 @@ extends <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../net/jodah/concurrentunit/Waiter.html#await--">await</a></span>()</code>
-<div class="block">Waits until <a href="../../../net/jodah/concurrentunit/Waiter.html#resume--"><code>resume()</code></a> is called the expected number of times, or the test is failed.</div>
+<div class="block">Waits until <a href="../../../net/jodah/concurrentunit/Waiter.html#resume--"><code>resume()</code></a> is called, or the test is failed.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../net/jodah/concurrentunit/Waiter.html#await-long-">await</a></span>(long&nbsp;delay)</code>
-<div class="block">Waits until the <code>delay</code> has elapsed, <a href="../../../net/jodah/concurrentunit/Waiter.html#resume--"><code>resume()</code></a> is called the expected number of times, or the test is
- failed.</div>
+<div class="block">Waits until the <code>delay</code> has elapsed, <a href="../../../net/jodah/concurrentunit/Waiter.html#resume--"><code>resume()</code></a> is called, or the test is failed.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
@@ -211,8 +210,7 @@ extends <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../net/jodah/concurrentunit/Waiter.html#await-long-java.util.concurrent.TimeUnit-">await</a></span>(long&nbsp;delay,
      <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/TimeUnit.html?is-external=true" title="class or interface in java.util.concurrent">TimeUnit</a>&nbsp;timeUnit)</code>
-<div class="block">Waits until the <code>delay</code> has elapsed, <a href="../../../net/jodah/concurrentunit/Waiter.html#resume--"><code>resume()</code></a> is called the expected number of times, or the test is
- failed.</div>
+<div class="block">Waits until the <code>delay</code> has elapsed, <a href="../../../net/jodah/concurrentunit/Waiter.html#resume--"><code>resume()</code></a> is called, or the test is failed.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
@@ -391,7 +389,7 @@ extends <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?
 <h4>await</h4>
 <pre>public&nbsp;void&nbsp;await()
            throws <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/TimeoutException.html?is-external=true" title="class or interface in java.util.concurrent">TimeoutException</a></pre>
-<div class="block">Waits until <a href="../../../net/jodah/concurrentunit/Waiter.html#resume--"><code>resume()</code></a> is called the expected number of times, or the test is failed.</div>
+<div class="block">Waits until <a href="../../../net/jodah/concurrentunit/Waiter.html#resume--"><code>resume()</code></a> is called, or the test is failed.</div>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/TimeoutException.html?is-external=true" title="class or interface in java.util.concurrent">TimeoutException</a></code> - if the operation times out while waiting</dd>
@@ -407,8 +405,7 @@ extends <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?
 <h4>await</h4>
 <pre>public&nbsp;void&nbsp;await(long&nbsp;delay)
            throws <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/TimeoutException.html?is-external=true" title="class or interface in java.util.concurrent">TimeoutException</a></pre>
-<div class="block">Waits until the <code>delay</code> has elapsed, <a href="../../../net/jodah/concurrentunit/Waiter.html#resume--"><code>resume()</code></a> is called the expected number of times, or the test is
- failed.</div>
+<div class="block">Waits until the <code>delay</code> has elapsed, <a href="../../../net/jodah/concurrentunit/Waiter.html#resume--"><code>resume()</code></a> is called, or the test is failed.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>delay</code> - Delay to wait in milliseconds</dd>
@@ -427,8 +424,7 @@ extends <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?
 <pre>public&nbsp;void&nbsp;await(long&nbsp;delay,
                   <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/TimeUnit.html?is-external=true" title="class or interface in java.util.concurrent">TimeUnit</a>&nbsp;timeUnit)
            throws <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/TimeoutException.html?is-external=true" title="class or interface in java.util.concurrent">TimeoutException</a></pre>
-<div class="block">Waits until the <code>delay</code> has elapsed, <a href="../../../net/jodah/concurrentunit/Waiter.html#resume--"><code>resume()</code></a> is called the expected number of times, or the test is
- failed.</div>
+<div class="block">Waits until the <code>delay</code> has elapsed, <a href="../../../net/jodah/concurrentunit/Waiter.html#resume--"><code>resume()</code></a> is called, or the test is failed.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>delay</code> - Delay to wait for</dd>
@@ -621,6 +617,6 @@ extends <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?
 <!--   -->
 </a></div>
 <!-- ======== END OF BOTTOM NAVBAR ======= -->
-<p class="legalCopy"><small>Copyright &#169; 2010&#x2013;2016. All rights reserved.</small></p>
+<p class="legalCopy"><small>Copyright &#169; 2010&#x2013;2017. All rights reserved.</small></p>
 </body>
 </html>
