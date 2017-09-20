@@ -114,7 +114,7 @@ public abstract class ConcurrentTestCase {
    * @see Waiter#await(long, TimeUnit)
    */
   protected void await(long delay, TimeUnit timeUnit) throws TimeoutException {
-    waiter.await(delay);
+    waiter.await(delay, timeUnit);
   }
 
   /**

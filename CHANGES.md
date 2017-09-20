@@ -1,3 +1,9 @@
+# 0.4.3
+
+### Bug Fixes
+
+* Fixed issue #17 - ConcurrentUnit.await(long, TimeUnit) not passing through TimeUnit
+
 # 0.4.2
 
 ### New Features
