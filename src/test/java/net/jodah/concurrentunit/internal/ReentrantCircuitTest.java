@@ -1,7 +1,6 @@
 package net.jodah.concurrentunit.internal;
 
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +19,7 @@ public class ReentrantCircuitTest {
   }
 
   public void shouldInitiallyBeClosed() {
-    assertTrue(circuit.isClosed());
+    assertThat(circuit.isClosed()).isTrue();
   }
 
   public void shouldHandleOpenCloseCycles() {
@@ -29,21 +28,21 @@ public class ReentrantCircuitTest {
       circuit.close();
     }
 
-    assertTrue(circuit.isClosed());
+    assertThat(circuit.isClosed()).isTrue();
   }
 
   public void shouldHandleRepeatedOpens() {
     for (int i = 0; i < 3; i++)
       circuit.open();
 
-    assertFalse(circuit.isClosed());
+    assertThat(circuit.isClosed()).isFalse();
   }
 
   public void shouldHandleRepeatedClosed() {
     for (int i = 0; i < 3; i++)
       circuit.close();
 
-    assertTrue(circuit.isClosed());
+    assertThat(circuit.isClosed()).isTrue();
   }
 
   public void shouldReturnWhenAwaitAndAlreadyClosed() throws Throwable {
@@ -52,7 +51,7 @@ public class ReentrantCircuitTest {
     circuit.await(3, TimeUnit.MINUTES);
 
     // Awaits should return immediately
-    assertTrue(System.currentTimeMillis() - t < 500);
+    assertThat(System.currentTimeMillis() - t).isLessThan(500);
   }
 
   public void shouldHandleSequentialWaiters() throws Throwable {

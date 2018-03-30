@@ -1,8 +1,7 @@
 package net.jodah.concurrentunit;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -59,9 +58,9 @@ public class WaiterTest {
 
     try {
       w.await();
-      fail();
+      fail("Should throw an AssertionError");
     } catch (AssertionError e) {
-      assertTrue(e.getCause() instanceof IllegalArgumentException);
+      assertThat(e.getCause()).isInstanceOf(IllegalArgumentException.class);
     }
   }
 
@@ -157,7 +156,7 @@ public class WaiterTest {
 
     Thread.sleep(200);
     w.await(0, 2);
-    assertEquals(expectedResumes.get(), 2, "Expected two resumes from separate thread");
+    assertThat(expectedResumes.get()).as("Expected two resumes from separate thread").isEqualTo(2);
   }
 
   @Test(expectedExceptions = AssertionError.class)
