@@ -27,7 +27,7 @@ import net.jodah.concurrentunit.internal.ReentrantCircuit;
  * @author Jonathan Halterman
  */
 public class Waiter {
-  private static final String TIMEOUT_MESSAGE = "Test timed out while waiting for an expected result";
+  private static final String TIMEOUT_MESSAGE = "Test timed out while waiting for an expected result, expectedResumes: %d, actualResumes: %d";
   private AtomicInteger remainingResumes = new AtomicInteger(0);
   private final ReentrantCircuit circuit = new ReentrantCircuit();
   private volatile Throwable failure;
@@ -174,8 +174,10 @@ public class Waiter {
 
         if (delay == 0)
           circuit.await();
-        else if (!circuit.await(delay, timeUnit))
-          throw new TimeoutException(TIMEOUT_MESSAGE);
+        else if (!circuit.await(delay, timeUnit)) {
+          final int actualResumes = expectedResumes - remainingResumes.get();
+          throw new TimeoutException(String.format(TIMEOUT_MESSAGE, expectedResumes, actualResumes));
+        }
       }
     } catch (InterruptedException e) {
     } finally {
