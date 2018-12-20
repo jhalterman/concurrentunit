@@ -1,3 +1,10 @@
+# 0.4.4
+
+### New Features
+
+* Added OSGi support
+* Added better TimeoutException error message
+
 # 0.4.3
 
 ### Bug Fixes
