@@ -13,6 +13,8 @@
   <name>ConcurrentUnit</name>
   <url>https://github.com/jhalterman/concurrentunit</url>
   <inceptionYear>2010</inceptionYear>
+  <packaging>bundle</packaging>
+  <description>Toolkit for testing multi-threaded and asynchronous applications</description>
 
   <licenses>
     <license>
@@ -58,6 +60,19 @@
             -Xdoclint:none
             -notimestamp
           </additionalparam>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>3.5.1</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Export-Package>net.jodah.concurrentunit.*</Export-Package>
+            <Import-Package>*</Import-Package>
+            <Private-Package></Private-Package>
+          </instructions>
         </configuration>
       </plugin>
     </plugins>
