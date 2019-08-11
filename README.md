@@ -132,9 +132,10 @@ More example usages can be found in the [WaiterTest](https://github.com/jhalterm
 
 Since it is not always possible to ensure that `resume` is called after `await` in multi-threaded tests, ConcurrentUnit allows them to be called in either order. If `resume` is called before `await`, the resume calls are recorded and `await` will return immediately if the expected number of resumes have already occurred. This ability comes with a caveat though: it is not possible to detect when additional unexpected `resume` calls are made since ConcurrentUnit allows an `await` call to follow.
 
-## Docs
+## Additional Resources
 
-JavaDocs are available [here](https://jhalterman.github.com/concurrentunit/javadoc).
+- [Javadocs](https://jodah.net/concurrentunit/javadoc)
+- [An article](https://jodah.net/testing-multi-threaded-code) describing the motivation for ConcurrentUnit
 
 ## License
 
