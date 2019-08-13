@@ -23,7 +23,7 @@ import net.jodah.concurrentunit.internal.ReentrantCircuit;
 
 /**
  * Waits on a test, carrying out assertions, until being resumed.
- * 
+ *
  * @author Jonathan Halterman
  */
 public class Waiter {
@@ -41,7 +41,7 @@ public class Waiter {
 
   /**
    * Asserts that the {@code expected} values equals the {@code actual} value
-   * 
+   *
    * @throws AssertionError when the assertion fails
    */
   public void assertEquals(Object expected, Object actual) {
@@ -54,7 +54,7 @@ public class Waiter {
 
   /**
    * Asserts that the {@code condition} is false.
-   * 
+   *
    * @throws AssertionError when the assertion fails
    */
   public void assertFalse(boolean condition) {
@@ -64,7 +64,7 @@ public class Waiter {
 
   /**
    * Asserts that the {@code object} is not null.
-   * 
+   *
    * @throws AssertionError when the assertion fails
    */
   public void assertNotNull(Object object) {
@@ -74,7 +74,7 @@ public class Waiter {
 
   /**
    * Asserts that the {@code object} is null.
-   * 
+   *
    * @throws AssertionError when the assertion fails
    */
   public void assertNull(Object object) {
@@ -84,7 +84,7 @@ public class Waiter {
 
   /**
    * Asserts that the {@code condition} is true.
-   * 
+   *
    * @throws AssertionError when the assertion fails
    */
   public void assertTrue(boolean condition) {
@@ -94,7 +94,7 @@ public class Waiter {
 
   /**
    * Asserts that {@code actual} satisfies the condition specified by {@code matcher}.
-   * 
+   *
    * @throws AssertionError when the assertion fails
    */
   public <T> void assertThat(T actual, org.hamcrest.Matcher<? super T> matcher) {
@@ -107,8 +107,8 @@ public class Waiter {
 
   /**
    * Waits until {@link #resume()} is called, or the test is failed.
-   * 
-   * @throws TimeoutException if the operation times out while waiting
+   *
+   * @throws TimeoutException if the operation times out or is interrupted while waiting
    * @throws AssertionError if any assertion fails while waiting
    */
   public void await() throws TimeoutException {
@@ -117,9 +117,9 @@ public class Waiter {
 
   /**
    * Waits until the {@code delay} has elapsed, {@link #resume()} is called, or the test is failed.
-   * 
+   *
    * @param delay Delay to wait in milliseconds
-   * @throws TimeoutException if the operation times out while waiting
+   * @throws TimeoutException if the operation times out or is interrupted while waiting
    * @throws AssertionError if any assertion fails while waiting
    */
   public void await(long delay) throws TimeoutException {
@@ -128,10 +128,10 @@ public class Waiter {
 
   /**
    * Waits until the {@code delay} has elapsed, {@link #resume()} is called, or the test is failed.
-   * 
+   *
    * @param delay Delay to wait for
    * @param timeUnit TimeUnit to delay for
-   * @throws TimeoutException if the operation times out while waiting
+   * @throws TimeoutException if the operation times out or is interrupted while waiting
    * @throws AssertionError if any assertion fails while waiting
    */
   public void await(long delay, TimeUnit timeUnit) throws TimeoutException {
@@ -141,11 +141,11 @@ public class Waiter {
   /**
    * Waits until the {@code delay} has elapsed, {@link #resume()} is called {@code expectedResumes} times, or the test
    * is failed.
-   * 
+   *
    * @param delay Delay to wait for in milliseconds
    * @param expectedResumes Number of times {@link #resume()} is expected to be called before the awaiting thread is
    *          resumed
-   * @throws TimeoutException if the operation times out while waiting
+   * @throws TimeoutException if the operation times out or is interrupted while waiting
    * @throws AssertionError if any assertion fails while waiting
    */
   public void await(long delay, int expectedResumes) throws TimeoutException {
@@ -155,12 +155,12 @@ public class Waiter {
   /**
    * Waits until the {@code delay} has elapsed, {@link #resume()} is called {@code expectedResumes} times, or the test
    * is failed.
-   * 
+   *
    * @param delay Delay to wait for
    * @param timeUnit TimeUnit to delay for
    * @param expectedResumes Number of times {@link #resume()} is expected to be called before the awaiting thread is
    *          resumed
-   * @throws TimeoutException if the operation times out while waiting
+   * @throws TimeoutException if the operation times out or is interrupted while waiting
    * @throws AssertionError if any assertion fails while waiting
    */
   public void await(long delay, TimeUnit timeUnit, int expectedResumes) throws TimeoutException {
@@ -174,13 +174,16 @@ public class Waiter {
 
         if (delay == 0)
           circuit.await();
-        else if (!circuit.await(delay, timeUnit)) {
-          final int actualResumes = expectedResumes - remainingResumes.get();
-          throw new TimeoutException(String.format(TIMEOUT_MESSAGE, expectedResumes, actualResumes));
-        }
+        else
+          circuit.await(delay, timeUnit);
       }
     } catch (InterruptedException e) {
     } finally {
+      if (!circuit.isClosed()) {
+        final int actualResumes = expectedResumes - remainingResumes.get();
+        throw new TimeoutException(String.format(TIMEOUT_MESSAGE, expectedResumes, actualResumes));
+      }
+
       remainingResumes.set(0);
       circuit.open();
       if (failure != null) {
@@ -201,7 +204,7 @@ public class Waiter {
 
   /**
    * Fails the current test.
-   * 
+   *
    * @throws AssertionError
    */
   public void fail() {
@@ -210,7 +213,7 @@ public class Waiter {
 
   /**
    * Fails the current test for the given {@code reason}.
-   * 
+   *
    * @throws AssertionError
    */
   public void fail(String reason) {
@@ -220,7 +223,7 @@ public class Waiter {
   /**
    * Fails the current test with the given {@code reason}, sets the number of expected resumes to 0, and throws the
    * {@code reason} as an {@code AssertionError} in the main test thread and in the current thread.
-   * 
+   *
    * @throws AssertionError wrapping the {@code reason}
    */
   public void fail(Throwable reason) {
@@ -240,7 +243,7 @@ public class Waiter {
   /**
    * Rethrows the {@code failure} in the main test thread and in the current thread. Differs from
    * {@link #fail(Throwable)} which wraps a failure in an AssertionError before throwing.
-   * 
+   *
    * @throws Throwable the {@code failure}
    */
   public void rethrow(Throwable failure) {
@@ -252,12 +255,12 @@ public class Waiter {
   private static void sneakyThrow(Throwable t) {
     Waiter.<Error>sneakyThrow2(t);
   }
-  
+
   @SuppressWarnings("unchecked")
   private static <T extends Throwable> void sneakyThrow2(Throwable t) throws T {
     throw (T) t;
   }
-  
+
   private String format(Object expected, Object actual) {
     return "expected:<" + expected + "> but was:<" + actual + ">";
   }

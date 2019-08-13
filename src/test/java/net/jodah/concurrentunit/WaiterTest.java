@@ -223,6 +223,18 @@ public class WaiterTest {
     w.await();
   }
 
+  @Test(expectedExceptions = TimeoutException.class)
+  public void shouldHandleInterruption() throws Throwable {
+    final Waiter w = new Waiter();
+    final Thread main = Thread.currentThread();
+    new Thread(new Runnable() {
+      public void run() {
+        main.interrupt();
+      }
+    }).start();
+    w.await(1000);
+  }
+
   public void shouldSupportSuccessiveResumeAwaits() throws Throwable {
     final Waiter w = new Waiter();
     w.resume();
