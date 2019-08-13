@@ -4,3 +4,6 @@ target/
 .classpath
 .settings/
 test-output/
+docs/
+.idea
+*.iml
