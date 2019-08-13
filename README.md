@@ -94,12 +94,12 @@ As a more concise alternative to using the `Waiter` class, you can extend the `C
 class SomeTest extends ConcurrentTestCase {
   @Test
   public void shouldSucceed() throws Throwable {
-	new Thread(() -> {
+    new Thread(() -> {
       doSomeWork();
-	  threadAssertTrue(true);
-	  resume();
-	}).start();
-	  
+      threadAssertTrue(true);
+      resume();
+    }).start();
+
     await(1000);
   }
 }

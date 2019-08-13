@@ -1,9 +1,13 @@
 language: java
-sudo: false
+dist: trusty
 
 jdk:
   - oraclejdk8
-  - openjdk7
+
+cache:
+  directories:
+    - .autoconf
+    - "$HOME/.m2"
 
 notifications:
   email: false
@@ -11,6 +15,3 @@ notifications:
 branches:
   only:
     - master
-
-after_success:
-  - bin/ci-push-javadoc.sh
