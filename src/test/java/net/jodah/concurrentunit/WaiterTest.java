@@ -223,7 +223,7 @@ public class WaiterTest {
     w.await();
   }
 
-  @Test(expectedExceptions = TimeoutException.class)
+  @Test(expectedExceptions = InterruptedException.class)
   public void shouldHandleInterruption() throws Throwable {
     final Waiter w = new Waiter();
     final Thread main = Thread.currentThread();

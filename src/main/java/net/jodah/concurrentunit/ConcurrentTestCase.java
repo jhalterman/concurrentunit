@@ -92,35 +92,35 @@ public abstract class ConcurrentTestCase {
   /**
    * @see Waiter#await()
    */
-  protected void await() throws TimeoutException {
+  protected void await() throws TimeoutException, InterruptedException {
     waiter.await();
   }
 
   /**
    * @see Waiter#await(long)
    */
-  protected void await(long delay) throws TimeoutException {
+  protected void await(long delay) throws TimeoutException, InterruptedException {
     waiter.await(delay);
   }
 
   /**
    * @see Waiter#await(long, int)
    */
-  protected void await(long delay, int expectedResumes) throws TimeoutException {
+  protected void await(long delay, int expectedResumes) throws TimeoutException, InterruptedException {
     waiter.await(delay, expectedResumes);
   }
 
   /**
    * @see Waiter#await(long, TimeUnit)
    */
-  protected void await(long delay, TimeUnit timeUnit) throws TimeoutException {
+  protected void await(long delay, TimeUnit timeUnit) throws TimeoutException, InterruptedException {
     waiter.await(delay, timeUnit);
   }
 
   /**
-   * @see Waiter#wait(long, TimeUnit, int)
+   * @see Waiter#await(long, TimeUnit, int)
    */
-  protected void await(long delay, TimeUnit timeUnit, int expectedResumes) throws TimeoutException {
+  protected void await(long delay, TimeUnit timeUnit, int expectedResumes) throws TimeoutException, InterruptedException {
     waiter.await(delay, timeUnit, expectedResumes);
   }
 

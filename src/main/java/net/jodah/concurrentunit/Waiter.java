@@ -108,10 +108,11 @@ public class Waiter {
   /**
    * Waits until {@link #resume()} is called, or the test is failed.
    *
-   * @throws TimeoutException if the operation times out or is interrupted while waiting
+   * @throws TimeoutException if the operation times out while waiting
+   * @throws InterruptedException if the operations is interrupted while waiting
    * @throws AssertionError if any assertion fails while waiting
    */
-  public void await() throws TimeoutException {
+  public void await() throws TimeoutException, InterruptedException {
     await(0, TimeUnit.MILLISECONDS, 1);
   }
 
@@ -119,10 +120,11 @@ public class Waiter {
    * Waits until the {@code delay} has elapsed, {@link #resume()} is called, or the test is failed.
    *
    * @param delay Delay to wait in milliseconds
-   * @throws TimeoutException if the operation times out or is interrupted while waiting
+   * @throws TimeoutException if the operation times out while waiting
+   * @throws InterruptedException if the operations is interrupted while waiting
    * @throws AssertionError if any assertion fails while waiting
    */
-  public void await(long delay) throws TimeoutException {
+  public void await(long delay) throws TimeoutException, InterruptedException {
     await(delay, TimeUnit.MILLISECONDS, 1);
   }
 
@@ -131,10 +133,11 @@ public class Waiter {
    *
    * @param delay Delay to wait for
    * @param timeUnit TimeUnit to delay for
-   * @throws TimeoutException if the operation times out or is interrupted while waiting
+   * @throws TimeoutException if the operation times out while waiting
+   * @throws InterruptedException if the operations is interrupted while waiting
    * @throws AssertionError if any assertion fails while waiting
    */
-  public void await(long delay, TimeUnit timeUnit) throws TimeoutException {
+  public void await(long delay, TimeUnit timeUnit) throws TimeoutException, InterruptedException {
     await(delay, timeUnit, 1);
   }
 
@@ -145,10 +148,11 @@ public class Waiter {
    * @param delay Delay to wait for in milliseconds
    * @param expectedResumes Number of times {@link #resume()} is expected to be called before the awaiting thread is
    *          resumed
-   * @throws TimeoutException if the operation times out or is interrupted while waiting
+   * @throws TimeoutException if the operation times out while waiting
+   * @throws InterruptedException if the operations is interrupted while waiting
    * @throws AssertionError if any assertion fails while waiting
    */
-  public void await(long delay, int expectedResumes) throws TimeoutException {
+  public void await(long delay, int expectedResumes) throws TimeoutException, InterruptedException {
     await(delay, TimeUnit.MILLISECONDS, expectedResumes);
   }
 
@@ -160,10 +164,11 @@ public class Waiter {
    * @param timeUnit TimeUnit to delay for
    * @param expectedResumes Number of times {@link #resume()} is expected to be called before the awaiting thread is
    *          resumed
-   * @throws TimeoutException if the operation times out or is interrupted while waiting
+   * @throws TimeoutException if the operation times out while waiting
+   * @throws InterruptedException if the operations is interrupted while waiting
    * @throws AssertionError if any assertion fails while waiting
    */
-  public void await(long delay, TimeUnit timeUnit, int expectedResumes) throws TimeoutException {
+  public void await(long delay, TimeUnit timeUnit, int expectedResumes) throws TimeoutException, InterruptedException {
     try {
       if (failure == null) {
         synchronized (this) {
@@ -174,16 +179,12 @@ public class Waiter {
 
         if (delay == 0)
           circuit.await();
-        else
-          circuit.await(delay, timeUnit);
+        else if (!circuit.await(delay, timeUnit)) {
+          final int actualResumes = expectedResumes - remainingResumes.get();
+          throw new TimeoutException(String.format(TIMEOUT_MESSAGE, expectedResumes, actualResumes));
+        }
       }
-    } catch (InterruptedException e) {
     } finally {
-      if (!circuit.isClosed()) {
-        final int actualResumes = expectedResumes - remainingResumes.get();
-        throw new TimeoutException(String.format(TIMEOUT_MESSAGE, expectedResumes, actualResumes));
-      }
-
       remainingResumes.set(0);
       circuit.open();
       if (failure != null) {
