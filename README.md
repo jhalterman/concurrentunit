@@ -1,8 +1,8 @@
 # ConcurrentUnit
 [![Build Status](https://travis-ci.org/jhalterman/concurrentunit.svg)](https://travis-ci.org/jhalterman/concurrentunit)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jodah/concurrentunit/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jodah/concurrentunit) 
+[![Maven Central](https://img.shields.io/maven-central/v/net.jodah/concurrentunit.svg?maxAge=60&colorB=53C92E)](https://maven-badges.herokuapp.com/maven-central/net.jodah/concurrentunit)
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-[![JavaDoc](http://javadoc-badge.appspot.com/net.jodah/concurrentunit.svg?label=javadoc)](https://jhalterman.github.com/concurrentunit/javadoc)
+[![JavaDoc](https://img.shields.io/maven-central/v/net.jodah/concurrentunit.svg?maxAge=60&label=javadoc&color=blue)](https://jodah.net/concurrentunit/javadoc/)
 
 A simple, zero-dependency toolkit for testing multi-threaded code. Supports Java 1.6+.
 
@@ -139,4 +139,4 @@ Since it is not always possible to ensure that `resume` is called after `await` 
 
 ## License
 
-Copyright 2011-2016 Jonathan Halterman - Released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).
+Copyright 2011-2021 Jonathan Halterman - Released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).
