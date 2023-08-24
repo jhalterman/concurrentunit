@@ -119,13 +119,7 @@ Since Hamcrest is an optional dependency, users need to explicitly add it to the
 
 #### Other Examples
 
-More example usages can be found in the [WaiterTest](https://github.com/jhalterman/concurrentunit/blob/master/src/test/java/net/jodah/concurrentunit/WaiterTest.java) or in the following projects:
-
-* [Atomix](https://github.com/atomix/atomix/tree/master/core/src/test/java/io/atomix)
-* [Copycat](https://github.com/atomix/copycat/tree/master/server/src/test/java/io/atomix/copycat/server/state)
-* [Failsafe](https://github.com/jhalterman/failsafe/blob/master/src/test/java/net/jodah/failsafe/AsyncFailsafeTest.java)
-* [ExpiringMap](https://github.com/jhalterman/expiringmap/tree/master/src/test/java/net/jodah/expiringmap/functional)
-* [Lyra](https://github.com/jhalterman/lyra/tree/master/src/test/java/net/jodah/lyra/internal/util/concurrent)
+More example usages can be found in the [WaiterTest](https://github.com/jhalterman/concurrentunit/blob/master/src/test/java/net/jodah/concurrentunit/WaiterTest.java).
 
 ## Additional Notes
 
